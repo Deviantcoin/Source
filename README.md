@@ -19,3 +19,5 @@ MAX SUPPLY : 88,000,000 Coins
 RPC Port: 7117
 
 Network Port: 7118
+
+Find the Compiled Wallets here https://github.com/Deviantcoin/Wallet
