@@ -4,7 +4,7 @@ Coin Name : Deviant Coin
 
 Ticker : DEV
 
-Coin Type : POW + POS
+Coin Type :  POS / Masternode
 
 MAXIMUM BLOCK SIZE : 3 MB
 
@@ -12,7 +12,7 @@ Block Time : 60 Sec Approx
 
 MINIMUM STAKE AGE : 24 Hr
 
-Coin Maturity : 50
+Coin Maturity : 80
 
 MAX SUPPLY : 88,000,000 Coins
 
