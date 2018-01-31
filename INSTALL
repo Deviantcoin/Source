@@ -1,0 +1,9 @@
+Building Deviant
+
+See doc/readme-qt.rst for instructions on building Deviant QT,
+the intended-for-end-users, nice-graphical-interface, reference
+implementation of Deviant.
+
+See doc/build-*.txt for instructions on building Deviantd,
+the intended-for-services, no-graphical-interface, reference
+implementation of Deviant.

@@ -1,0 +1,319 @@
+Changes:
+Discourage fee sniping with nLockTime
+Limited drop of difficulty per block
+Minimum age replaced with Minimum confirmations
+Reward and Min Conf Blocks Changed
+nTargetSpacing replaced with Static Const TARGET_SPACING
+TARGET_SPACING set to 60 seconds after the fork, Was set to 69 seconds
+Ignore getaddr messages on Outbound connections
+Increase Stake Split Threshold
+Correctly randomize change output position
+Fix static build with miniupnpc >= 1.9.20140610
+Fix for building with Boost 1.58
+Fix boost::get usage with Boost 1.58 in rpcrawtransaction.cpp
+Fix issue where getrawtransaction RPC call does not work
+Fix issue on open orders tab of the trading page
+Decentralized checkpoints from PosV3
+PosV3 Modifier
+Fork at block 90 000
+
+-------------------------------------------------------------------------------
+			^		CLIENT BUILD 1.2-61401		^
+-------------------------------------------------------------------------------
+
+DNSSeed Thread Fix
+
+Scale up addrman
+
+Sync fixes, CPU use, Darksend fixes
+https://github.com/SCDeveloper/All-Work-Done-Prior-to-DarkSilk-RC-Repo/commit/0e1fe7055bf536c5545849264724aeecdcf3201b
+
+Guard against OpenSSL's new strict DER checks
+https://github.com/SCDeveloper/All-Work-Done-Prior-to-DarkSilk-RC-Repo/commit/63d5e3cf349de3f9853bde444a0eef17f6e37041
+
+Fix twice denominatedBalance calculations in qt/overviewpage.cpp
+
+Solve performance problems by caching and fix probable security issue
+https://github.com/SCDeveloper/All-Work-Done-Prior-to-DarkSilk-RC-Repo/commit/9d0e11afad97e4dcd979c2d6ac0e795f0ce9bc4b
+https://github.com/SCDeveloper/All-Work-Done-Prior-to-DarkSilk-RC-Repo/commit/c49309131fe47dabf683d9dd81bbe29ae6ba34f6
+
+Fix payee selectoin on CMasternodePayments::ProcessBlock
+https://github.com/dashpay/dash/commit/428d5976c7630cc4e1f0a0a66d22ae061ce87dfd
+
+fix log output / more notCapableReason-s
+https://github.com/dashpay/dash/commit/b861e7ac4ca871626e75953ed833f9195b762932
+
+Fix priority calculation in CreateTransaction
+https://github.com/dashpay/dash/commit/9cd1dd9f6b5aace6c0e780bf4365fb2900757c1a
+
+HasCollateralInputs should check only for at least 1 collateral (not 2)
+https://github.com/dashpay/dash/commit/74551e9f31f10e351de1ec07f60513662ccdb06a
+
+CMasternodeman
+https://github.com/dashpay/dash/commits/v0.11.2.x?page=12
+
+move list logic back to rpcdarkcsend
+https://github.com/dashpay/dash/commit/dd610900516b615c4f1ed9d3cd279485683c4d52
+
+add masternodelist to command list
+https://github.com/dashpay/dash/commit/0cd0e9de6d65c66b5f0df566acc7f9cc1f5edb94
+
+track lastTimeChanged for mnodeman
+https://github.com/dashpay/dash/commit/003a1b7d72cbf753b7394c473d88a6be0df5a643
+
+show active/total MNs on info tab / update it in separate timer
+https://github.com/dashpay/dash/commit/d2e3d67a1d632912e83684e2a8b8e5780eae4216
+
+better naming/readability (Find)
+https://github.com/dashpay/dash/commit/0d51e1c90df98f649ea3062efa448c1c5bb9827b
+
+Added dstx support for free transactions
+https://github.com/dashpay/dash/commit/13246598b8b84af2ade8b3d0368655fc64f5cca0
+
+Change the way changes are handled:
+https://github.com/dashpay/dash/commit/2e05bf212eaf5e0fe98161f673483dc62e5c0a95
+
+rpc fixes:
+https://github.com/dashpay/dash/commit/558585039696096b355a9e75beb70b36a3b7cec9
+
+rpc: allow "darksend" only with ENABLE_WALLET
+https://github.com/dashpay/dash/commit/0d82275d05e9fb81d8d550a58c3d6202bdfce4e5
+
+fix DoAutomaticDenominating:
+https://github.com/dashpay/dash/commit/56471f83304cff936f2ad09242f9a2462389e75b
+
+allow searching masternode list by ip address
+https://github.com/dashpay/dash/commit/736e6da6b852119332b41b4da955af4d1b4ed8f9
+
+Few fixes for processing extra messages:
+https://github.com/dashpay/dash/commit/1ded1b9ec2de5687b38ac9178cc4b58375201e03
+
+Fix crashes on remove from vector
+https://github.com/dashpay/dash/commit/4fe845bf1530ad1b59dcfddebe50f323e1977402
+
+Fix versions:
+https://github.com/dashpay/dash/commit/0747da6b36a51f24efa7ca7fcb4f2ffa3332a118
+
+check and remove expired masternodes on client start
+https://github.com/dashpay/dash/commit/4af7c7411ac6837260ff5ff04ee4a4a944ac2082
+
+clear maps in mnodeman
+https://github.com/dashpay/dash/commit/80ce3f5a061e069145db81850e1afcffa52c7e12
+
+Cleanup copiler
+
+fix filtering for "active" (was broken after IP filtering)
+https://github.com/dashpay/dash/commit/62800573cc49ce77162de6af3f75765677a74384
+
+add spaces to table-fy console view of "masternode list"
+https://github.com/dashpay/dash/commit/3a4c3e401b9b5ae3054135e405110cf2f8372425
+
+remove "|" to make full mode a bit more compact
+https://github.com/dashpay/dash/commit/64c1a8b147e3b5e39751ab908b77c6e9a2a5e058
+
+add spaces to IP only in full mode
+https://github.com/dashpay/dash/commit/d2a1ecf5240415ac4c293bed2db9b3af9103be7d
+
+Merged masternode blinding
+https://github.com/dashpay/dash/commit/a6b58ab1e892cf70936383fd927305a043bd55ff
+
+Make masternodes.dat verification more specific
+https://github.com/dashpay/dash/commit/2a5d588784e87aa275360aab11888ab7ff14eeab
+
+fixed shared key usage
+https://github.com/dashpay/dash/commit/c6f0259d9bc03835a728c3cb4aa600069c7d092f
+
+rename masternodes.dat->mncache.dat / fix strings
+https://github.com/dashpay/dash/commit/e522cbfd6ad286d4a6cfaa670b12e498eea50c1d
+
+save nDsqCount in mncache.dat
+https://github.com/dashpay/dash/commit/b5414e1c3c86e9f99d5a331f41a73191173045aa
+
+Added input/output/sig trickle
+https://github.com/dashpay/dash/commit/c169e49fce95ff587ccdf221e536ccc9737dbd05
+
+Change DS_COLLATERAL to 0.01 remove DS_FEE
+
+Masternode Proof of Service Added
+
+Add structure for donating a percentage of ones earnings to another party via the protocol
+
+Fixed mnw message issue
+
+fix pubkey/donation conditions
+
+Fixed blinding submission process
+
+increasing ss timeouts
+
+fixed dsee sync
+
+fixed Masternode payments FindOldestNotInVec
+
+Disabled masternode blinding / increased rounds defaults 
+
+Masternode voting improvements
+
+remove locks
+
+Added easy to use donations
+
+Changed some locks
+
+Disable relay
+
+Changed some locks
+
+Improved donation code/message
+
+Added "masternode list donation
+
+Fixed ranking issues for PoSe
+
+Fixed masternode donation miscalculations
+
+Explicitly grab each piece of data from memory for hashing in CMasternode::CalculateScore
+
+Reducing spam
+
+New Command: Masternode list pose - Shows proof-of-service score for Masternodes 
+
+Don't limit ds-send inputs number artificially, fees should take care of it instead
+
+Reference node fixes / debugging
+
+Compiling warnings / fixed block comparison 
+
+Create empty darksilk.conf during startup if it doesn't exist
+
+Updated minimum for reference node
+
+Fixes for "masternode list"
+
+Fix MN ssee: MN should not update itself in MN list until it activated
+
+Fix possible MN breakage during mixing
+
+Remove donations to multisig addresses
+
+Further fixes to Darksend
+
+Added nDenom check for ssa
+
+Fix SelectCoinsByDenominations
+
+Do not search for known sporks by hash, search only by ID
+
+Check collateral before submitting
+
+Fixed vote-many
+
+Fix filtering for masternode list votes rpc 
+
+Fixed vote crashes
+
+masternode stop should disable MN and remove it from MN list
+
+DS: Adjust Target Balance
+
+Should set nMaxToAnonymize equal to denominatedBalance only if it's greater then it was possible to denominate
+
+Ref-node : Always fill vecLastPayments 
+
+Removal of centrally broadcasted synchronized checkpoints 
+
+SPORK Additions/Changes | SANDSTORM fee removal
+https://github.com/SCDeveloper/DarkSilk-Release-Candidate/commit/e6ebc2ec9a955f1447a9c29e49232c61df97d768
+
+Improve Trading Dialog page to include cross sending and withdrawing from bittrex.
+(wallet needs to be unlocked and SHOULD be encrypted)
+
+Fix PrepareDarksendDenominate - loop instead of if
+
+When DS inputs are selected in coincontrol:
+- spend exactly these inputs
+- allow to spend more than 0.1 as a fee (note: still will respect non-ss fee limits)
+
+Slight optimizations/readability improvements for ds 
+
+Unlock inputs on DS failure 
+
+
+-------------------------------------------------------------------------------
+            ^       CLIENT BUILD 1.2.1-61402      ^
+-------------------------------------------------------------------------------
+
+Update vAletrt pub/privkeys
+
+Add cryptostream for api key encryption
+
+Add removeSpaces in bitcoinunits.cpp
+
+Coin control fixes for Qt5
+
+move setClipboard to GUIUtil
+
+Add getMappedColumn -> coincontrol.h
+
+Add parentViewItemChanged which is currently unused
+
+Add timers into coincontrol
+- also helps to let users know the wallet isnt frozen when following the debug.log
+
+Api keys for Bittrex can be saved to a file which is in an encrypted format using cryptostream
+
+2 new DisplayBalance functions to help speed up the trading dialogs
+
+on_SaveKeys_clicked() and on_LoadKeys_clicked() added to tradingdialog.cpp
+
+Added a small wait time into cross sending
+- Some users were experiencing insufficient funds when withdrawing. 
+- Caused by sell orders not going through quickly enough
+- 50ms added to every trade. On the last trade this is increased to 100ms.
+- 500 ms added before the withdraw.
+
+transactiontablemodel.updateWallet cleaned and updated
+
+getdifficulty, getsubsidy, and getinfo no longer return POW values
+
+masternodelist updated to include new commands
+
+added "masternode status" command
+
+Autostart masternode upon startup
+
+Move DS pool status out of overview page
+
+-------------------------------------------------------------------------------
+
+
+Removal of old code:
+IsProtocolV1/IsProtocolV2 hard fork switches removed
+FutureDriftV1/FutureDriftV2 reverted back to FutureDrift
+CheckStakeKernelHashV1/CheckStakeKernalHashV2 reverted back to CheckStakeKernelHash
+Remove ComputeMaxBits, ComputeMinWork, ComputeMinStake
+Remove KeePass integration
+
+
+-------------------------------------------------------------------------------
+
+
+To Do:
+Add time offset to getpeerinfo output
+https://github.com/SCDeveloper/DarkSilk-Release-Candidate/commit/9c4b2303957cd19ccdf2e47fce745240c3ea822b
+
+Made special marker non spendable
+Added nonspendable encoding for block signing key
+BIP66 compatibility
+Replaced NOP7 with CHECKLOCKTIMEVERIFY
+Enforce new script verification flags
+Demand canonical block sig from updated peers
+
+Submitblock: Add submission of stake template
+https://github.com/SCDeveloper/DarkSilk-Release-Candidate/commit/a108b8b0179f1790dd8dba824efc3a15c1ab6066
+
+check the templates in util.h/util.cpp --phark
+(int64_t)long long has limits on the size of integers
+
+Upnp updates - phark
+https://github.com/neoscoin/neos-core/commit/9fce916fa64f90f2a41b71adb18674b968b689d3
