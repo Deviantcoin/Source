@@ -1426,6 +1426,10 @@ const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex, bool fProofOfSta
 	return pindex;
 }
 
+
+const int targetReadjustment_forkBlockHeight = 260000;
+
+
 unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfStake)
 {
 	CBigNum bnTargetLimit = fProofOfStake ? GetProofOfStakeLimit(pindexLast->nHeight) : Params().ProofOfWorkLimit();
@@ -1442,16 +1446,29 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
 
 	int64_t nActualSpacing = pindexPrev->GetBlockTime() - pindexPrevPrev->GetBlockTime();
 
-	if (nActualSpacing < 0) {
-		nActualSpacing = TARGET_SPACING;
-	}
+	if (pindexLast->nHeight < targetReadjustment_forkBlockHeight)
+	  {
+         	if (nActualSpacing < 0) {
+	         	nActualSpacing = TARGET_SPACING;
+         	}
 
+	        // ppcoin: target change every block
+         	// ppcoin: retarget with exponential moving toward target spacing
+	  }
+	else
+	  {
+	    if (nActualSpacing < nTargetTimespan / 2)
+	      nActualSpacing = nTargetTimespan / 2;
+	    if (nActualSpacing > nTargetTimespan * 2)
+	      nActualSpacing = nTargetTimespan * 2;
+	  }
 
-	// ppcoin: target change every block
-	// ppcoin: retarget with exponential moving toward target spacing
+	
+	
 	CBigNum bnNew;
 	bnNew.SetCompact(pindexPrev->nBits);
 	int64_t nInterval = nTargetTimespan / TARGET_SPACING;
+
 	bnNew *= ((nInterval - 1) * TARGET_SPACING + nActualSpacing + nActualSpacing);
 	bnNew /= ((nInterval + 1) * TARGET_SPACING);
 
