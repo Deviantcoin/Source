@@ -1417,6 +1417,7 @@ int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, i
 }
 
 static int64_t nTargetTimespan = 10 * 60;  // 10 mins
+static int64_t nTargetTimespanV2 = 20 * 60;  // 20 mins
 
 // ppcoin: find last block index up to pindex
 const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex, bool fProofOfStake)
@@ -1430,6 +1431,8 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
 {
 	CBigNum bnTargetLimit = fProofOfStake ? GetProofOfStakeLimit(pindexLast->nHeight) : Params().ProofOfWorkLimit();
 
+	int nHeight = pindexLast->nHeight + 1;
+	
 	if (pindexLast == NULL)
 		return bnTargetLimit.GetCompact(); // genesis block
 
@@ -1442,22 +1445,49 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
 
 	int64_t nActualSpacing = pindexPrev->GetBlockTime() - pindexPrevPrev->GetBlockTime();
 
-	if (nActualSpacing < 0) {
-		nActualSpacing = TARGET_SPACING;
-	}
-
-
-	// ppcoin: target change every block
-	// ppcoin: retarget with exponential moving toward target spacing
 	CBigNum bnNew;
 	bnNew.SetCompact(pindexPrev->nBits);
-	int64_t nInterval = nTargetTimespan / TARGET_SPACING;
-	bnNew *= ((nInterval - 1) * TARGET_SPACING + nActualSpacing + nActualSpacing);
-	bnNew /= ((nInterval + 1) * TARGET_SPACING);
+	
+	if (nHeight < TARGET_DIFFICULTY_UPDATE_START)
+	{
+	
+	  if (nActualSpacing < 0) {
+	    nActualSpacing = TARGET_SPACING;
+	  }
 
-	if (bnNew <= 0 || bnNew > bnTargetLimit)
-		bnNew = bnTargetLimit;
 
+	  // ppcoin: target change every block
+	  // ppcoin: retarget with exponential moving toward target spacing
+	  int64_t nInterval = nTargetTimespan / TARGET_SPACING;
+	  bnNew *= ((nInterval - 1) * TARGET_SPACING + nActualSpacing + nActualSpacing);
+	  bnNew /= ((nInterval + 1) * TARGET_SPACING);
+
+	  if (bnNew <= 0 || bnNew > bnTargetLimit)
+	    bnNew = bnTargetLimit;
+	}
+	else
+	{
+	  // In this version, it is OK if nActualSpacing is negative
+	  // We'll still put some reasonable bounds on it just in case
+
+	  // Normally, nTargetspanV2 should be much greater than either nActualSpacing or TARGET_SPACING
+	  // The new change looks to correct an exploit where a timestamp is falsified by the submitter
+	  // This can cause a temporary jump in nActualSpacing and similar drop on the next block with the correct timestamp
+	  // For example, if nActualSpacing is typically 60, and goes to 660 (600 added on):
+	  // First time, bnNew is adjusted by (660 - 60 + 2400) / (60 - 660 + 2400) = 3000 / 1800
+	  // Next time, nActualSpacing is now -540 (120 - 660), bnNew is adjusted by (-540 - 60 + 2400) / (60 + 540 + 2400) = 1800 / 3000
+	  // The net product is 1 -- effectively canceling each other out.
+	  if ((nActualSpacing - TARGET_SPACING + nTargetTimespanV2 >= 30) && (TARGET_SPACING - nActualSpacing + nTargetTimespanV2 >= 30))
+	    {
+	      bnNew *= (nActualSpacing - TARGET_SPACING + nTargetTimespanV2);
+	      bnNew /= (TARGET_SPACING - nActualSpacing + nTargetTimespanV2);
+	    }
+	  else
+	    {
+	      return error("GetNextTargetRequired() : timestamp or timespan out of bounds");
+	    }
+	}
+	
 	return bnNew.GetCompact();
 }
 
