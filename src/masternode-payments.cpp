@@ -19,7 +19,12 @@ CMasternodePayments masternodePayments;
 map<uint256, CMasternodePaymentWinner> mapSeenMasternodeVotes;
 
 int CMasternodePayments::GetMinMasternodePaymentsProto() {
-    return MIN_MASTERNODE_PAYMENT_PROTO_VERSION_1;
+    if (nBestHeight >= 230000) {
+        return MIN_MASTERNODE_PAYMENT_PROTO_VERSION_1;
+    }
+    if (nBestHeight >= 250000) {
+        return MIN_MASTERNODE_PAYMENT_PROTO_VERSION_2;
+    }
 }
 
 void ProcessMessageMasternodePayments(CNode* pfrom, std::string& strCommand, CDataStream& vRecv)
