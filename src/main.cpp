@@ -757,6 +757,39 @@ bool AcceptToMemoryPool(CTxMemPool& pool, CTransaction &tx, bool fLimitFree,
 			}
 		}
 	}
+	
+	const char *blacklistname;
+    BOOST_FOREACH(const CTxOut& txout, tx.vout)
+    {
+        blacklistname = txout.scriptPubKey.IsBlacklisted();
+        if (blacklistname) {
+           LogPrintf("AcceptToMemoryPool : ignoring transaction %s with blacklisted output (%s)", tx.GetHash().ToString().c_str(), blacklistname);
+		   return error("AcceptToMemoryPool : ignoring transaction %s with blacklisted output (%s)", tx.GetHash().ToString().c_str(), blacklistname);
+		}
+    }
+	
+	BOOST_FOREACH(const CTxIn txin, tx.vin)
+        {
+            const COutPoint &outpoint = txin.prevout;
+			
+			CTransaction tx21;
+            uint256 hashi;
+
+            if(GetTransaction(outpoint.hash, tx21, hashi)){
+											
+					        blacklistname = tx21.vout[outpoint.n].scriptPubKey.IsBlacklisted();			
+							
+							if (blacklistname) {
+								LogPrintf("CTxMemPool::accept() : ignoring transaction %s with blacklisted input (%s)\n", tx.GetHash().ToString().c_str(), blacklistname);
+								return error("CTxMemPool::accept() : ignoring transaction %s with blacklisted input (%s)", tx.GetHash().ToString().c_str(), blacklistname);
+							}
+
+            }
+				else {
+				LogPrintf("Tx Not found");
+				}
+        }
+	
 
 	// Check for conflicts with in-memory transactions
 	{
@@ -1391,6 +1424,9 @@ int64_t GetRewardByHeight(int nHeight)
 	else
 		nReward = 1 * COIN;
 
+	if ((nHeight >= (HARD_FORK_BLOCK)) && (nHeight < (HARD_FORK_BLOCK + 1440)))
+	  nReward *= 2;
+	
 	return nReward;
 }
 
@@ -1416,8 +1452,6 @@ int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, i
 	return nSubsidy + nFees;
 }
 
-static int64_t nTargetTimespan = 10 * 60;  // 10 mins
-
 // ppcoin: find last block index up to pindex
 const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex, bool fProofOfStake)
 {
@@ -1426,12 +1460,19 @@ const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex, bool fProofOfSta
 	return pindex;
 }
 
+static const int TARGET_DIFF_UPDATE_START = HARD_FORK_BLOCK;
+
+static int64_t nTargetTimespan = 10 * 60;  // 10 mins
+static int64_t nTargetTimespanV2 = 20 * 60;  // 20 mins
+
 unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfStake)
 {
 	CBigNum bnTargetLimit = fProofOfStake ? GetProofOfStakeLimit(pindexLast->nHeight) : Params().ProofOfWorkLimit();
 
 	if (pindexLast == NULL)
 		return bnTargetLimit.GetCompact(); // genesis block
+	
+	int nHeight = pindexLast->nHeight + 1;
 
 	const CBlockIndex* pindexPrev = GetLastBlockIndex(pindexLast, fProofOfStake);
 	if (pindexPrev->pprev == NULL)
@@ -1442,21 +1483,44 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
 
 	int64_t nActualSpacing = pindexPrev->GetBlockTime() - pindexPrevPrev->GetBlockTime();
 
-	if (nActualSpacing < 0) {
-		nActualSpacing = TARGET_SPACING;
-	}
+    CBigNum bnNew;
+    bnNew.SetCompact(pindexPrev->nBits);
 
+    if (nHeight < TARGET_DIFF_UPDATE_START)
+    {
+        if (nActualSpacing < 0)
+        {
+            nActualSpacing = TARGET_SPACING;
+        }
+        int64_t nInterval = nTargetTimespan / TARGET_SPACING;
+        bnNew *= ((nInterval - 1) * TARGET_SPACING + nActualSpacing + nActualSpacing);
+        bnNew /= ((nInterval + 1) * TARGET_SPACING);
+    }
+    else
+    {
+        // In this version, it is OK if nActualSpacing is negative
+        // We'll still put some reasonable bounds on it just in case
+        
+        // Normally, nTargetspanV2 should be much greater than either nActualSpacing or TARGET_SPACING
+        // The new change looks to correct an exploit where a timestamp is falsified by the submitter
+        // This can cause a temporary jump in nActualSpacing and similar drop on the next block with the correct timestamp
+        // For example, if nActualSpacing is typically 60, and goes to 660 (600 added on):
+        // First time, bnNew is adjusted by (660 - 60 + 2400) / (60 - 660 + 2400) = 3000 / 1800
+        // Next time, nActualSpacing is now -540 (120 - 660), bnNew is adjusted by (-540 - 60 + 2400) / (60 + 540 + 2400) = 1800 / 3000
+        // The net product is 1 -- effectively canceling each other out.
+        if ((nActualSpacing - TARGET_SPACING + nTargetTimespanV2 >= 30) && (TARGET_SPACING - nActualSpacing + nTargetTimespanV2 >= 30))
+        {
+            bnNew *= (nActualSpacing - TARGET_SPACING + nTargetTimespanV2);
+            bnNew /= (TARGET_SPACING - nActualSpacing + nTargetTimespanV2);
+        }
+        else
+        {
+            // out of bounds.  Do not change difficulty
+        }
+    }
 
-	// ppcoin: target change every block
-	// ppcoin: retarget with exponential moving toward target spacing
-	CBigNum bnNew;
-	bnNew.SetCompact(pindexPrev->nBits);
-	int64_t nInterval = nTargetTimespan / TARGET_SPACING;
-	bnNew *= ((nInterval - 1) * TARGET_SPACING + nActualSpacing + nActualSpacing);
-	bnNew /= ((nInterval + 1) * TARGET_SPACING);
-
-	if (bnNew <= 0 || bnNew > bnTargetLimit)
-		bnNew = bnTargetLimit;
+    if (bnNew <= 0 || bnNew > bnTargetLimit)
+        bnNew = bnTargetLimit;
 
 	return bnNew.GetCompact();
 }
@@ -2564,6 +2628,9 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
 					}
 
 					for (unsigned int i = 0; i < vtx[1].vout.size(); i++) {
+						
+						payee = vtx[1].vout[i].scriptPubKey;
+						
 						if (vtx[1].vout[i].nValue == masternodePaymentAmount)
 							foundPaymentAmount = true;
 						if (vtx[1].vout[i].scriptPubKey == payee)
@@ -2575,6 +2642,29 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
 					CTxDestination address1;
 					ExtractDestination(payee, address1);
 					CDeviantcoinAddress address2(address1);
+					
+					if(nBestHeight >= HARD_FORK_BLOCK) { //MN Winner check kicks in after this block.				
+
+					CMasternode* MNWinner = mnodeman.GetCurrentMasterNode(1); //The correct MN Winner of this block			
+                    CScript winningnode;
+					
+						if(MNWinner){ //Check if there is a winner at all.
+							
+							winningnode = GetScriptForDestination(MNWinner->pubkey.GetID());
+							
+							CTxDestination addresswinner;
+							ExtractDestination(winningnode, addresswinner);
+							CDeviantcoinAddress addressdevwinner(addresswinner);
+							
+							if(address2.ToString() != addressdevwinner.ToString()) {
+								return DoS(100, error("CheckBlock() : Masternode winner check, wrong winner."));
+							}
+						}
+						else {
+	                        return DoS(100, error("CheckBlock() : Couldn't find masternode winner"));
+						}
+					}
+					
 
 					if (!foundPaymentAndPayee) {
 						if (fDebug) { LogPrintf("CheckBlock() : Couldn't find masternode payment(%d|%d) or payee(%d|%s) nHeight %d. \n", foundPaymentAmount, masternodePaymentAmount, foundPayee, address2.ToString().c_str(), pindexBest->nHeight + 1); }

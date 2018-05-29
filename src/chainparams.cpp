@@ -105,13 +105,14 @@ public:
         base58Prefixes[EXT_PUBLIC_KEY] = list_of(0x04)(0x88)(0xB2)(0x1E).convert_to_container<std::vector<unsigned char> >();
         base58Prefixes[EXT_SECRET_KEY] = list_of(0x04)(0x88)(0xAD)(0xE4).convert_to_container<std::vector<unsigned char> >();
 
-        vSeeds.push_back(CDNSSeedData("0",  "165.227.83.233"));
-        vSeeds.push_back(CDNSSeedData("1",  "104.131.124.189"));
-		vSeeds.push_back(CDNSSeedData("2", "139.59.72.56"));
-		vSeeds.push_back(CDNSSeedData("3", "128.199.201.170"));
-		vSeeds.push_back(CDNSSeedData("4", "165.227.156.13"));
-		vSeeds.push_back(CDNSSeedData("5", "165.227.231.58"));
-		vSeeds.push_back(CDNSSeedData("6",  "159.89.152.81"));
+        vSeeds.push_back(CDNSSeedData("seed1.deviantcoin.io",  "seed1.deviantcoin.io"));
+        vSeeds.push_back(CDNSSeedData("seed2.deviantcoin.io",  "seed2.deviantcoin.io"));
+        vSeeds.push_back(CDNSSeedData("seed3.deviantcoin.io",  "seed3.deviantcoin.io"));
+        vSeeds.push_back(CDNSSeedData("seed4.deviantcoin.io",  "seed4.deviantcoin.io"));
+        vSeeds.push_back(CDNSSeedData("seed5.deviantcoin.io",  "seed5.deviantcoin.io"));
+        vSeeds.push_back(CDNSSeedData("seed6.deviantcoin.io",  "seed6.deviantcoin.io"));
+        vSeeds.push_back(CDNSSeedData("seed7.deviantcoin.io",  "seed7.deviantcoin.io"));
+
 
         convertSeeds(vFixedSeeds, pnSeed, ARRAYLEN(pnSeed), nDefaultPort);
         //vFixedSeeds.clear();
