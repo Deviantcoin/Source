@@ -100,6 +100,50 @@ public:
     }
 };
 
+int GetMidMasternodes()
+{
+    int iMasternodes = 0;
+    vector <unsigned int> vecNodes;
+    int inNonce;
+    CBlockIndex *pBlockCurr = pindexBest;
+    for (int i = 0; i < 361; i++)
+    {
+        if (pBlockCurr)
+        {
+            vecNodes.push_back(pBlockCurr->nNonce & 2047);
+            pBlockCurr = pBlockCurr->pprev;
+        }
+        else
+            vecNodes.push_back(0);
+    }
+    sort(vecNodes.begin(), vecNodes.end());
+    iMasternodes = vecNodes.at(180);
+    return iMasternodes;
+}
+
+int GetMidMasternodesUntilPrev()
+{
+    int iMasternodes = 0;
+    vector <unsigned int> vecNodes;
+    int inNonce;
+    CBlockIndex *pBlockCurr = pindexBest;
+    if (pBlockCurr)
+        pBlockCurr = pBlockCurr->pprev;
+    for (int i = 0; i < 361; i++)
+    {
+        if (pBlockCurr)
+        {
+            vecNodes.push_back(pBlockCurr->nNonce & 2047);
+            pBlockCurr = pBlockCurr->pprev;
+        }
+        else
+            vecNodes.push_back(0);
+    }
+    sort(vecNodes.begin(), vecNodes.end());
+    iMasternodes = vecNodes.at(180);
+    return iMasternodes;
+}
+
 // CreateNewBlock: create new block (without proof-of-work/proof-of-stake)
 CBlock* CreateNewBlock(CReserveKey& reservekey, bool fProofOfStake, int64_t* pFees)
 {
