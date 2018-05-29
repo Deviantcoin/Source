@@ -67,17 +67,12 @@ static const int64_t MAX_MONEY = 88000000 * COIN; // 88M PoW coins
 inline bool MoneyRange(int64_t nValue) { return (nValue >= 0 && nValue <= MAX_MONEY); }
 /** Threshold for nLockTime: below this value it is interpreted as block number, otherwise as UNIX timestamp. */
 static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC
-inline bool IsProtocolV3(int nHeight) { return TestNet() || nHeight > 260000; }
+inline bool IsProtocolV3(int nHeight) { return TestNet() || nHeight > 275000; }
 
 static const int64_t DRIFT = 600;
 
-static const int64_t DRIFTv2 = 120; // shortened drift window to deter exploits
-
 inline int64_t FutureDrift(int64_t nTime)
 {
-    if (IsProtocolV3(nBestHeight))
-        return nTime + DRIFTv2;
-    else
         return nTime + DRIFT;
 }
 
@@ -1052,10 +1047,8 @@ public:
 
     int64_t GetPastTimeLimit() const
     {
-        if (IsProtocolV3(nBestHeight))
-            return GetBlockTime() - DRIFTv2;
-        else
-            return GetBlockTime() - DRIFT;    }
+        return GetBlockTime() - DRIFT;    
+    }
 
     enum { nMedianTimeSpan=11 };
 
