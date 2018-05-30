@@ -533,6 +533,85 @@ std::vector<pair<int, CMasternode> > CMasternodeMan::GetMasternodeRanks(int64_t 
     return vecMasternodeRanks;
 }
 
+std::vector<pair<unsigned int, CMasternode> > CMasternodeMan::GetMasternodeScores(int64_t nBlockHeight, int minProtocol)
+{
+	std::vector<pair<unsigned int, CMasternode> > vecMasternodeScores;
+
+	//make sure we know about this block
+	uint256 hash = 0;
+	if (!GetBlockHash(hash, nBlockHeight)) return vecMasternodeScores;
+
+	// scan for winner
+	BOOST_FOREACH(CMasternode& mn, vMasternodes) {
+
+		mn.Check();
+
+		if (mn.protocolVersion < minProtocol) continue;
+		if (!mn.IsEnabled()) {
+			continue;
+		}
+
+		uint256 n = mn.CalculateScore(1, nBlockHeight);
+		unsigned int n2 = 0;
+		memcpy(&n2, &n, sizeof(n2));
+
+		vecMasternodeScores.push_back(make_pair(n2, mn));
+	}
+
+	sort(vecMasternodeScores.rbegin(), vecMasternodeScores.rend(), CompareValueOnlyMN());
+
+	return vecMasternodeScores;
+}
+
+bool CMasternodeMan::IsMNReal(std::string strMNAddr)
+{
+	//make sure we know about this block
+	uint256 hash = 0;
+	if (!GetBlockHash(hash, 0)) 
+		return 0;
+
+	// scan for winner
+	BOOST_FOREACH(CMasternode& mn, vMasternodes) 
+	{
+		mn.Check();
+		if (mn.activeState == (CMasternode::MASTERNODE_VIN_SPENT)) 
+			continue;
+		//std::string strVin = mn.vin.prevout.ToStringShort();
+		CScript pubkey;
+		pubkey.SetDestination(mn.pubkey.GetID());
+		CTxDestination address1;
+		ExtractDestination(pubkey, address1);
+		CDeviantcoinAddress address2(address1);
+		std::string strMNDBAddr;
+		strMNDBAddr = address2.ToString();
+		if (strMNAddr == strMNDBAddr)
+			return true;
+	}
+	return false;
+}
+
+unsigned int CMasternodeMan::GetMasternodeCount(int64_t nBlockHeight)
+{
+	unsigned int iMasterNodes = 0;
+
+	//make sure we know about this block
+	uint256 hash = 0;
+	if (!GetBlockHash(hash, nBlockHeight)) 
+		return 0;
+
+	// scan for enabled masternodes
+	BOOST_FOREACH(CMasternode& mn, vMasternodes) 
+	{
+		mn.Check();
+		//if (mn.protocolVersion < minProtocol)
+		//	continue;
+		if (!mn.IsEnabled())
+			continue;
+		iMasterNodes++;
+	}
+	return iMasterNodes;
+}
+
 CMasternode* CMasternodeMan::GetMasternodeByRank(int nRank, int64_t nBlockHeight, int minProtocol, bool fOnlyActive)
 {
     std::vector<pair<unsigned int, CTxIn> > vecMasternodeScores;

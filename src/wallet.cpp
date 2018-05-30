@@ -15,6 +15,7 @@
 #include "walletdb.h"
 #include "crypter.h"
 #include "key.h"
+#include "miner.h"
 #include "spork.h"
 #include "darksend.h"
 #include "instantx.h"
@@ -3355,7 +3356,7 @@ uint64_t CWallet::GetStakeWeight() const
     return nWeight;
 }
 
-bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int64_t nSearchInterval, int64_t nFees, CTransaction& txNew, CKey& key)
+bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int64_t nSearchInterval, int64_t nFees, CTransaction& txNew, CKey& key, unsigned int* nNonceBlock)
 {
     CBlockIndex* pindexPrev = pindexBest;
     CBigNum bnTargetPerCoinDay;
@@ -3521,67 +3522,84 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     // Masternode Payments
     int payments = 1;
     // start masternode payments
-    bool bMasterNodePayment = false; // note was false, set true to test
-
-    if ( Params().NetworkID() == CChainParams::TESTNET ){
-        if (GetTime() > START_MASTERNODE_PAYMENTS_TESTNET ){
-            bMasterNodePayment = true;
-        }
-    }else{
-        if (GetTime() > START_MASTERNODE_PAYMENTS){
-            bMasterNodePayment = true;
-        }
-    }
+    bool bMasterNodePayment = true;
 
     CScript payee;
     CTxIn vin;
-    bool hasPayment = true;
-    if(bMasterNodePayment) {
+    int64_t masternodePayment = GetMasternodePayment(pindexPrev->nHeight + 1, nReward);
+    if (bMasterNodePayment) {
         //spork
         if(!masternodePayments.GetBlockPayee(pindexPrev->nHeight+1, payee, vin)){
             CMasternode* winningNode = mnodeman.GetCurrentMasterNode(1);
-            if(winningNode){
-                payee = GetScriptForDestination(winningNode->pubkey.GetID());
+            if(winningNode)
+            {
+                CScript pubkeyWork;
+                pubkeyWork.SetDestination(winningNode->pubkey.GetID());
+                CTxDestination address1;
+                ExtractDestination(pubkeyWork, address1);
+                CDeviantcoinAddress address2(address1);
+                std::string strAddr = address2.ToString();
+                uint256 hash4;
+                SHA256((unsigned char*)strAddr.c_str(), strAddr.length(), (unsigned char*)&hash4);
+                unsigned int iAddrHash;
+                memcpy(&iAddrHash, &hash4, 4);
+                iAddrHash = iAddrHash << 11;
+                unsigned int iCurrentMNs = mnodeman.GetMasternodeCount();
+                if (iCurrentMNs > 2047)
+                    iCurrentMNs = 2047;
+                *nNonceBlock = (iAddrHash | iCurrentMNs);
+                fprintf(stderr, "CreateCoinStake():MN addr:%s, AddrHash:%X, nNonceBlock&~2047:%X, nNonceBlock:%X\n",
+                    strAddr.c_str(), iAddrHash, (*nNonceBlock & (~2047)), *nNonceBlock); //for Debug
+                if (IsProtocolV3(pindexPrev->nHeight + 1))
+                {
+                    int iWinerAge = 0;
+                    unsigned int iWinerAgeU = 0;
+                    uint256 iWinerAge256 = 0;
+                    int iMidMNCount = 0;
+                    iWinerAge256 = winningNode->CalculateScore();
+                    memcpy(&iWinerAgeU, &iWinerAge256, 4);
+                    iWinerAge = (iWinerAgeU >> 20);
+                    iMidMNCount = GetMidMasternodes();
+                    if (iWinerAge > (iMidMNCount*0.6))
+                    {
+                        payee = GetScriptForDestination(winningNode->pubkey.GetID());
+                    }
+                    else
+                    {
+                        masternodePayment = GetMasternodePaymentSmall(pindexPrev->nHeight + 1, nFees);
+                        payee = GetScriptForDestination(winningNode->pubkey.GetID());
+                    }
+                }
+                else
+                {
+                    payee = GetScriptForDestination(winningNode->pubkey.GetID());
+                }
             } else {
                 return error("CreateCoinStake: Failed to detect masternode to pay\n");
             }
         }
     }
 
-    if(hasPayment){
-        payments = txNew.vout.size() + 1;
-        txNew.vout.resize(payments);
-
-        txNew.vout[payments-1].scriptPubKey = payee;
-        txNew.vout[payments-1].nValue = 0;
-
-        CTxDestination address1;
-        ExtractDestination(payee, address1);
-        CDeviantcoinAddress address2(address1);
-
-        LogPrintf("Masternode payment to %s\n", address2.ToString().c_str());
-    }
-
+    payments = txNew.vout.size() + 1;
+    txNew.vout.resize(payments);
+    txNew.vout[payments-1].scriptPubKey = payee;
+    txNew.vout[payments-1].nValue = 0;
+    CTxDestination address1;
+    ExtractDestination(payee, address1);
+    CDeviantcoinAddress address2(address1);
+    LogPrintf("Masternode payment to %s\n", address2.ToString().c_str());
     int64_t blockValue = nCredit;
-    int64_t masternodePayment = GetMasternodePayment(pindexPrev->nHeight+1, nReward);
 
 
     // Set output amount
-    if (!hasPayment && txNew.vout.size() == 3) // 2 stake outputs, stake was split, no masternode payment
-    {
-        txNew.vout[1].nValue = (blockValue / 2 / CENT) * CENT;
-        txNew.vout[2].nValue = blockValue - txNew.vout[1].nValue;
-    }
-    else if(hasPayment && txNew.vout.size() == 4) // 2 stake outputs, stake was split, plus a masternode payment
+    if(txNew.vout.size() == 4) // 2 stake outputs, stake was split, plus a masternode payment
     {
         txNew.vout[payments-1].nValue = masternodePayment;
         blockValue -= masternodePayment;
         txNew.vout[1].nValue = (blockValue / 2 / CENT) * CENT;
         txNew.vout[2].nValue = blockValue - txNew.vout[1].nValue;
     }
-    else if(!hasPayment && txNew.vout.size() == 2) // only 1 stake output, was not split, no masternode payment
-        txNew.vout[1].nValue = blockValue;
-    else if(hasPayment && txNew.vout.size() == 3) // only 1 stake output, was not split, plus a masternode payment
+    else if(txNew.vout.size() == 3) // only 1 stake output, was not split, plus a masternode payment
     {
         txNew.vout[payments-1].nValue = masternodePayment;
         blockValue -= masternodePayment;
