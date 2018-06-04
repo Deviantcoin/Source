@@ -13,6 +13,7 @@
 #include "script.h"
 #include "scrypt.h"
 #include "hashblock.h"
+#include "version.h"
 
 #include <list>
 
@@ -66,9 +67,14 @@ static const int64_t MAX_MONEY = 88000000 * COIN; // 88M PoW coins
 inline bool MoneyRange(int64_t nValue) { return (nValue >= 0 && nValue <= MAX_MONEY); }
 /** Threshold for nLockTime: below this value it is interpreted as block number, otherwise as UNIX timestamp. */
 static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC
+inline bool IsProtocolV3(int nHeight) { return TestNet() || nHeight > 275000; }
 
 static const int64_t DRIFT = 600;
-inline int64_t FutureDrift(int64_t nTime) { return nTime + DRIFT; }
+
+inline int64_t FutureDrift(int64_t nTime)
+{
+        return nTime + DRIFT;
+}
 
 /** "reject" message codes **/
 static const unsigned char REJECT_INVALID = 0x10;
@@ -180,6 +186,7 @@ bool AbortNode(const std::string &msg, const std::string &userMessage="");
 bool GetNodeStateStats(NodeId nodeid, CNodeStateStats &stats);
 
 int64_t GetMasternodePayment(int nHeight, int64_t blockValue);
+int64_t GetMasternodePaymentSmall(int nHeight, CAmount nFees);
 
 struct CNodeStateStats {
     int nMisbehavior;
@@ -1040,7 +1047,7 @@ public:
 
     int64_t GetPastTimeLimit() const
     {
-        return GetBlockTime() - DRIFT;
+        return GetBlockTime() - DRIFT;    
     }
 
     enum { nMedianTimeSpan=11 };

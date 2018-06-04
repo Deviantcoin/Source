@@ -131,7 +131,10 @@ public:
     std::vector<CMasternode> GetFullMasternodeVector() { Check(); return vMasternodes; }
 
     std::vector<pair<int, CMasternode> > GetMasternodeRanks(int64_t nBlockHeight, int minProtocol=0);
-    int GetMasternodeRank(const CTxIn &vin, int64_t nBlockHeight, int minProtocol=0, bool fOnlyActive=true);
+    std::vector<pair<unsigned int, CMasternode> > GetMasternodeScores(int64_t nBlockHeight, int minProtocol = 0);
+    bool IsMNReal(std::string strMNAddr);
+    unsigned int GetMasternodeCount(int64_t nBlockHeight = 0);
+    int GetMasternodeRank(const CTxIn &vin, int64_t nBlockHeight, int minProtocol = 0, bool fOnlyActive = true);
     CMasternode* GetMasternodeByRank(int nRank, int64_t nBlockHeight, int minProtocol=0, bool fOnlyActive=true);
 
     void ProcessMasternodeConnections();

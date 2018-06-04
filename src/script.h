@@ -831,6 +831,8 @@ public:
     bool IsNormalPaymentScript() const;
     bool IsPayToScriptHash() const;
 
+	const char *IsBlacklisted() const;
+	
     // Called by IsStandardTx and P2SH VerifyScript (which makes it consensus-critical).
     bool IsPushOnly() const
     {

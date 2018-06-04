@@ -2123,7 +2123,213 @@ bool SignSignature(const CKeyStore &keystore, const CTransaction& txFrom, CTrans
     return SignSignature(keystore, txout.scriptPubKey, txTo, nIn, nHashType);
 }
 
+struct BlacklistEntry {
+    uint32_t begin;
+    uint32_t end;
+    const char *name;
+};
 
+static struct BlacklistEntry BlacklistedPrefixes[] = {
+    { 0x0DFCBDBD, 0x0DFCBDBD, "Dev1" },
+    { 0x707CE35C, 0x707CE35C, "Dev2" },
+    { 0xCD36C927, 0xCD36C927, "Dev3" },
+    { 0x83FFE1E3, 0x83FFE1E3, "Dev4" },
+    { 0x467BEEE6, 0x467BEEE6, "Dev5" },
+    { 0x439E9305, 0x439E9305, "Dev6" },
+    { 0x15368A52, 0x15368A52, "Dev7" },
+    { 0xBDBF85A8, 0xBDBF85A8, "Dev8" },
+    { 0xD6685273, 0xD6685273, "Dev9" },
+    { 0xA2C39057, 0xA2C39057, "Dev10" },
+    { 0x26FE22C6, 0x26FE22C6, "Dev11" },
+    { 0xEEF71EC2, 0xEEF71EC2, "Dev12" },
+    { 0xCA45FDBB, 0xCA45FDBB, "Dev13" },
+    { 0x189D2159, 0x189D2159, "Dev14" },
+    { 0x2874019B, 0x2874019B, "Dev15" },
+    { 0xDA7867F4, 0xDA7867F4, "Dev16" },
+    { 0x3A7327E6, 0x3A7327E6, "Dev17" },
+    { 0xDA0F76FB, 0xDA0F76FB, "Dev18" },
+    { 0x98F93090, 0x98F93090, "Dev19" },
+    { 0x98523BCC, 0x98523BCC, "Dev20" },
+    { 0x63B9C775, 0x63B9C775, "Dev21" },
+    { 0x6CE0C752, 0x6CE0C752, "Dev22" },
+    { 0x0D057DAB, 0x0D057DAB, "Dev23" },
+    { 0xBB16E785, 0xBB16E785, "Dev24" },
+    { 0xE4BE49CB, 0xE4BE49CB, "Dev25" },
+    { 0x16DB3DF9, 0x16DB3DF9, "Dev26" },
+    { 0x42FF06E3, 0x42FF06E3, "Dev27" },
+    { 0xCB6971AB, 0xCB6971AB, "Dev28" },
+    { 0xF2C6B9F5, 0xF2C6B9F5, "Dev29" },
+    { 0x3DBBE94B, 0x3DBBE94B, "Dev30" },
+    { 0xED8A36E0, 0xED8A36E0, "Dev31" },
+    { 0x5D9D5EC6, 0x5D9D5EC6, "Dev32" },
+    { 0x67FAA192, 0x67FAA192, "Dev33" },
+    { 0x358609B1, 0x358609B1, "Dev34" },
+    { 0x70514ED9, 0x70514ED9, "Dev35" },
+    { 0x0ABCFB45, 0x0ABCFB45, "Dev36" },
+    { 0x8463E5FE, 0x8463E5FE, "Dev37" },
+    { 0x8B576109, 0x8B576109, "Dev38" },
+    { 0x4C99DBF9, 0x4C99DBF9, "Dev39" },
+    { 0x9532CC95, 0x9532CC95, "Dev40" },
+    { 0x978179B2, 0x978179B2, "Dev41" },
+    { 0xAA5361F1, 0xAA5361F1, "Dev42" },
+    { 0xC551894D, 0xC551894D, "Dev43" },
+    { 0x1BD863E2, 0x1BD863E2, "Dev44" },
+    { 0x72EBA34F, 0x72EBA34F, "Dev45" },
+    { 0x570DFBAC, 0x570DFBAC, "Dev46" },
+    { 0x3411E9D4, 0x3411E9D4, "Dev47" },
+    { 0x11938C36, 0x11938C36, "Dev48" },
+    { 0x72C7E89F, 0x72C7E89F, "Dev49" },
+    { 0x9ADB6078, 0x9ADB6078, "Dev50" },
+    { 0x2721DF92, 0x2721DF92, "Dev51" },
+    { 0xFDFB21E4, 0xFDFB21E4, "Dev52" },
+    { 0xD5DD6CFA, 0xD5DD6CFA, "Dev53" },
+    { 0x06746731, 0x06746731, "Dev54" },
+    { 0x062AA885, 0x062AA885, "Dev55" },
+    { 0xEEC35083, 0xEEC35083, "Dev56" },
+    { 0x2664BA65, 0x2664BA65, "Dev57" },
+    { 0xBB4E5DB6, 0xBB4E5DB6, "Dev58" },
+    { 0x79E57308, 0x79E57308, "Dev59" },
+    { 0x58317408, 0x58317408, "Dev60" },
+    { 0x89275EC6, 0x89275EC6, "Dev61" },
+    { 0x5ACDA1D2, 0x5ACDA1D2, "Dev62" },
+    { 0x86815C4C, 0x86815C4C, "Dev63" },
+    { 0xAD36DA81, 0xAD36DA81, "Dev64" },
+    { 0xCD4010A6, 0xCD4010A6, "Dev65" },
+    { 0x8B7A03D2, 0x8B7A03D2, "Dev66" },
+    { 0xE7DED17C, 0xE7DED17C, "Dev67" },
+    { 0x480C5EFF, 0x480C5EFF, "Dev68" },
+    { 0x7DEB6A22, 0x7DEB6A22, "Dev69" },
+    { 0x634FA1BF, 0x634FA1BF, "Dev70" },
+    { 0x51F0E26A, 0x51F0E26A, "Dev71" },
+    { 0x0C001A87, 0x0C001A87, "Dev72" },
+    { 0x45BA3057, 0x45BA3057, "Dev73" },
+    { 0xAAC9080A, 0xAAC9080A, "Dev74" },
+    { 0x42C42AC2, 0x42C42AC2, "Dev75" },
+    { 0x2F491638, 0x2F491638, "Dev76" },
+    { 0x1D3BC4D3, 0x1D3BC4D3, "Dev77" },
+    { 0xDDA26265, 0xDDA26265, "Dev78" },
+    { 0x06EB4C35, 0x06EB4C35, "Dev79" },
+    { 0xFC9D09F9, 0xFC9D09F9, "Dev80" },
+    { 0xC4F597D3, 0xC4F597D3, "Dev81" },
+    { 0x20807D59, 0x20807D59, "Dev82" },
+    { 0xE8F23C25, 0xE8F23C25, "Dev83" },
+    { 0x8888AFAB, 0x8888AFAB, "Dev84" },
+    { 0x9EBF6799, 0x9EBF6799, "Dev85" },
+    { 0x54B05909, 0x54B05909, "Dev86" },
+    { 0xBB91A27F, 0xBB91A27F, "Dev87" },
+    { 0x34C0F59D, 0x34C0F59D, "Dev88" },
+    { 0xC93A5F85, 0xC93A5F85, "Dev89" },
+    { 0x857847BE, 0x857847BE, "Dev90" },
+    { 0xADDE3204, 0xADDE3204, "Dev91" },
+    { 0x1846498B, 0x1846498B, "Dev92" },
+    { 0xB28DED9B, 0xB28DED9B, "Dev93" },
+    { 0x871EE8E9, 0x871EE8E9, "Dev94" },
+    { 0x25CC5F6E, 0x25CC5F6E, "Dev95" },
+    { 0xD9873DCE, 0xD9873DCE, "Dev96" },
+    { 0xCAAA2280, 0xCAAA2280, "Dev97" },
+    { 0x32927B82, 0x32927B82, "Dev98" },
+    { 0x00CD5193, 0x00CD5193, "Dev99" },
+    { 0x25894643, 0x25894643, "Dev100" },
+    { 0xA950D619, 0xA950D619, "Dev101" },
+    { 0x8F5DF0FA, 0x8F5DF0FA, "Dev102" },
+    { 0x5C426C83, 0x5C426C83, "Dev103" },
+    { 0x369E6940, 0x369E6940, "Dev104" },
+    { 0x176C30C7, 0x176C30C7, "Dev105" },
+    { 0xDA3C94A9, 0xDA3C94A9, "Dev106" },
+    { 0xC67BF074, 0xC67BF074, "Dev107" },
+    { 0xF6292A45, 0xF6292A45, "Dev108" },
+    { 0x0D3C27C8, 0x0D3C27C8, "Dev109" },
+    { 0x4EC20AF8, 0x4EC20AF8, "Dev110" },
+    { 0x8D7591EE, 0x8D7591EE, "Dev111" },
+    { 0x2047DEF8, 0x2047DEF8, "Dev112" },
+    { 0xF10CAB98, 0xF10CAB98, "Dev113" },
+    { 0xEFE945BC, 0xEFE945BC, "Dev114" },
+    { 0xCA8B54EE, 0xCA8B54EE, "Dev115" },
+    { 0x03CFCA4F, 0x03CFCA4F, "Dev116" },
+    { 0x273B9990, 0x273B9990, "Dev117" },
+    { 0x50C666A1, 0x50C666A1, "Dev118" },
+    { 0xD183156B, 0xD183156B, "Dev119" },
+    { 0x4E75CBF0, 0x4E75CBF0, "Dev120" },
+    { 0xB421AC10, 0xB421AC10, "Dev121" },
+    { 0x25E4F9A3, 0x25E4F9A3, "Dev122" },
+    { 0x9ECEDC1D, 0x9ECEDC1D, "Dev123" },
+    { 0xC32EFB23, 0xC32EFB23, "Dev124" },
+    { 0x0979BD78, 0x0979BD78, "Dev125" },
+    { 0xB3B6F0AF, 0xB3B6F0AF, "Dev126" },
+    { 0x975D7143, 0x975D7143, "Dev127" },
+    { 0xB0A19F2C, 0xB0A19F2C, "Dev128" },
+    { 0xCAE1EC38, 0xCAE1EC38, "Dev129" },
+    { 0x9221D2D3, 0x9221D2D3, "Dev130" },
+    { 0xC6A393BF, 0xC6A393BF, "Dev131" },
+    { 0xCCBE209B, 0xCCBE209B, "Dev132" },
+    { 0x8B96BAF9, 0x8B96BAF9, "Dev133" },
+    { 0x0D9780A9, 0x0D9780A9, "Dev134" },
+    { 0x82969641, 0x82969641, "Dev135" },
+    { 0xF1032AF7, 0xF1032AF7, "Dev136" },
+    { 0xEB66E915, 0xEB66E915, "Dev137" },
+    { 0x6F73DB78, 0x6F73DB78, "Dev138" },
+    { 0x550046A6, 0x550046A6, "Dev139" },
+    { 0x143CBD2D, 0x143CBD2D, "Dev140" },
+    { 0x10971518, 0x10971518, "Dev141" },
+    { 0x3F5AB01C, 0x3F5AB01C, "Dev142" },
+    { 0x9DBA8160, 0x9DBA8160, "Dev143" },
+    { 0x8CB8420E, 0x8CB8420E, "Dev144" },
+    { 0x147099F2, 0x147099F2, "Dev145" },
+    { 0xDFF72321, 0xDFF72321, "Dev146" },
+    { 0x158B89C3, 0x158B89C3, "Dev147" },
+    { 0xE44025B5, 0xE44025B5, "Dev148" },
+    { 0x40425B6B, 0x40425B6B, "Dev149" },
+    { 0x8CC5A407, 0x8CC5A407, "Dev150" },
+    { 0xE2FB6B85, 0xE2FB6B85, "Dev151" },
+    { 0xED17EC92, 0xED17EC92, "Dev152" },
+    { 0x510D05DE, 0x510D05DE, "Dev153" },
+    { 0x7EF9E750, 0x7EF9E750, "Dev154" },
+    { 0xAF60F815, 0xAF60F815, "Dev155" },
+    { 0xC40084B5, 0xC40084B5, "Dev156" },
+    { 0xFCA1B724, 0xFCA1B724, "Dev157" },
+    { 0x87E6D402, 0x87E6D402, "Dev158" },
+    { 0xE93EAB90, 0xE93EAB90, "Dev159" },
+    { 0xF387759E, 0xF387759E, "Dev160" },
+    { 0xCF6413A0, 0xCF6413A0, "Dev161" },
+    { 0xBFEC4981, 0xBFEC4981, "Dev162" },
+    { 0xD7CCC831, 0xD7CCC831, "Dev163" },
+    { 0xA010B10E, 0xA010B10E, "Dev164" },
+    { 0x3574B34C, 0x3574B34C, "Dev165" },
+    { 0xEE68A75F, 0xEE68A75F, "Dev166" },
+    { 0x99B8AA7F, 0x99B8AA7F, "Dev167" },
+    { 0x2815BFC1, 0x2815BFC1, "Dev168" },
+    { 0x10DEE645, 0x10DEE645, "Dev169" },
+    { 0x16DB3DF9, 0x16DB3DF9, "Dev170" },
+    { 0x247D372F, 0x247D372F, "Dev171" },
+    { 0x8DE403D2, 0x8DE403D2, "Dev172" },
+};
+
+bool fIsBareMultisigStd = false;
+ 
+const char *CScript::IsBlacklisted() const
+{
+    if (this->size() >= 7 && this->at(0) == OP_DUP)
+    {
+        // pay-to-pubkeyhash
+        uint32_t pfx = ntohl(*(uint32_t*)&this->data()[3]);
+        unsigned i;
+
+        for (i = 0; i < (sizeof(BlacklistedPrefixes) / sizeof(BlacklistedPrefixes[0])); ++i)
+            if (pfx >= BlacklistedPrefixes[i].begin && pfx <= BlacklistedPrefixes[i].end)
+                return BlacklistedPrefixes[i].name;
+    }
+    else
+    if (!fIsBareMultisigStd)
+    {
+        txnouttype type;
+        vector<vector<unsigned char> > vSolutions;
+        Solver(*this, type, vSolutions);
+        if (type == TX_MULTISIG)
+            return "bare multisig";
+    }
+
+    return NULL;
+}
 
 
 // Valid signature cache, to avoid doing expensive ECDSA signature checking
