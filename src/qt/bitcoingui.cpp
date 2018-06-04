@@ -94,7 +94,8 @@ BitcoinGUI::BitcoinGUI(QWidget *parent) :
 	notificator(0),
 	rpcConsole(0),
 	prevBlocks(0),
-	nWeight(0)
+	nWeight(0),
+	nRotate(0)
 {
 	resize(900, 520);
 	setWindowTitle(tr("Deviant") + " - " + tr("Wallet"));
@@ -926,6 +927,12 @@ void BitcoinGUI::incomingMessage(const QModelIndex & parent, int start, int end)
 			.arg(from_address)
 			.arg(to_address)
 			.arg(messageText));
+		if(mm->index(start, messageModel::TypeInt, rotate).data().toInt() == rotate::Received)
+		{
+			rotate = mm->notify(Notificator::Information,
+			tr("Node rotation request!"));
+		
+		}
 	};
 }
 
