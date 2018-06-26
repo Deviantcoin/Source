@@ -1,9 +1,13 @@
 Building Deviant
 
-See doc/readme-qt.rst for instructions on building Deviant QT,
-the intended-for-end-users, nice-graphical-interface, reference
-implementation of Deviant.
+Use the autogen script to prepare the build environment.
 
-See doc/build-*.txt for instructions on building Deviantd,
+    ./autogen.sh
+    ./configure
+    make
+
+Always verify the signatures and checksums.
+
+See doc/build-*.md for instructions on building deviantd,
 the intended-for-services, no-graphical-interface, reference
 implementation of Deviant.

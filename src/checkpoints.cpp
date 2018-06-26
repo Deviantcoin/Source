@@ -1,102 +1,103 @@
-// Copyright (c) 2009-2012 The Bitcoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Copyright (c) 2009-2014 The Bitcoin developers
+// Copyright (c) 2014-2015 The Dash developers
+// Copyright (c) 2015-2017 The PIVX developers
+// Copyright (c) 2015-2017 The Deviant developers
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-
-#include <boost/assign/list_of.hpp> // for 'map_list_of()'
-#include <boost/foreach.hpp>
 
 #include "checkpoints.h"
 
-#include "txdb.h"
+#include "chainparams.h"
 #include "main.h"
 #include "uint256.h"
 
+#include <stdint.h>
 
-static const int nCheckpointSpan = 5000;
+#include <boost/foreach.hpp>
 
 namespace Checkpoints
 {
-    typedef std::map<int, uint256> MapCheckpoints;
+/**
+     * How many times we expect transactions after the last checkpoint to
+     * be slower. This number is a compromise, as it can't be accurate for
+     * every system. When reindexing from a fast disk with a slow CPU, it
+     * can be up to 20, while when downloading from a slow network with a
+     * fast multicore CPU, it won't be much higher than 1.
+     */
+static const double SIGCHECK_VERIFICATION_FACTOR = 5.0;
 
-    //
-    // What makes a good checkpoint block?
-    // + Is surrounded by blocks with reasonable timestamps
-    //   (no blocks before with a timestamp after, none after with
-    //    timestamp before)
-    // + Contains no strange transactions
-    //
-    static MapCheckpoints mapCheckpoints =
-        boost::assign::map_list_of
-        (0,	Params().HashGenesisBlock() )
-		(11, uint256("0xe888335045b9a26f0e5c23d397531bdf0675c2e82ee770a0f8a8df07b48b242a"))
-		(26, uint256("0xa1d3531bfe1c0a057f5218ddec9459f5adb214f5c4ac1dcf6fc4dbe71fec1d4a"))
-		(42, uint256("0xe09bc55c77d399a647143c6581e7e9581ef0cde4333af5b73c848b6bdc556524"))
-		(49, uint256("0xf74b1c9c869e8f647163d6de5a76870ccf19027bccb2e13de8bae71e9deabf5b"))
-		(527, uint256("0x0444f8c42866530a0ff5bfb81b9fb57ac847eaea71ae6081bbdc80402e07a373"))
-		(1548, uint256("0x8150c0deaa6ba6562f968c712698bbcfefb2e621a41c9b66d02c6b84898636dd"))
-		(2192, uint256("0xca69d14c613732e23f9716b3bbafc3fd9aaba7df3bce634d6a35d155a79f1ac3"))
-		(2620, uint256("0x19abcbb1acd7d4d09861cc156139210463206b270bf82c0b838e7dd639029d58"))
-		(2621, uint256("0x69cec274d07108577ddeaab3ba57aa94091f85b6741c3915edec0ef7bc7c61ff"))
-		(2622, uint256("0xc68061fa2a4f83574bd2908eb3485d4e7bcfd662df641c66626d86448c300176"))
-		(3082, uint256("0xd7464b2009ecbcfc82240856aa23cc5d6f51d1179445f5465ebafa512d33b18e"))
-                (100000, uint256("0x14f26cc0c0ba030e7def8bdab2e2310607a09a7a2f518a9a990243fffcc7eb01"))
-                (150000, uint256("0x6ab6c3239d1210380a295a1574b2c7cc0ac8067b91ef97b846e7cfab2be30929"))
-                (200000, uint256("0xb0124b99d05b1c15d7feaf14eb177a2f29c70165578fda521c8edcaab517b820"))
-                (250000, uint256("0x4255e4f3fd5dd6f90446674d994af8c27167e32d2d44e9af23d604c509d9cbae"))
-    ;
+bool fEnabled = true;
 
-    // TestNet has no checkpoints
-    static MapCheckpoints mapCheckpointsTestnet;
-
-    bool CheckHardened(int nHeight, const uint256& hash)
-    {
-        MapCheckpoints& checkpoints = (TestNet() ? mapCheckpointsTestnet : mapCheckpoints);
-
-        MapCheckpoints::const_iterator i = checkpoints.find(nHeight);
-        if (i == checkpoints.end()) return true;
-        return hash == i->second;
-    }
-
-    int GetTotalBlocksEstimate()
-    {
-        MapCheckpoints& checkpoints = (TestNet() ? mapCheckpointsTestnet : mapCheckpoints);
-
-        if (checkpoints.empty())
-            return 0;
-        return checkpoints.rbegin()->first;
-    }
-
-    CBlockIndex* GetLastCheckpoint(const std::map<uint256, CBlockIndex*>& mapBlockIndex)
-    {
-        MapCheckpoints& checkpoints = (TestNet() ? mapCheckpointsTestnet : mapCheckpoints);
-
-        BOOST_REVERSE_FOREACH(const MapCheckpoints::value_type& i, checkpoints)
-        {
-            const uint256& hash = i.second;
-            std::map<uint256, CBlockIndex*>::const_iterator t = mapBlockIndex.find(hash);
-            if (t != mapBlockIndex.end())
-                return t->second;
-        }
-        return NULL;
-    }
-
-    // Automatically select a suitable sync-checkpoint 
-    const CBlockIndex* AutoSelectSyncCheckpoint()
-    {
-        const CBlockIndex *pindex = pindexBest;
-        // Search backward for a block within max span and maturity window
-        while (pindex->pprev && pindex->nHeight + nCheckpointSpan > pindexBest->nHeight)
-            pindex = pindex->pprev;
-        return pindex;
-    }
-
-    // Check against synchronized checkpoint
-    bool CheckSync(int nHeight)
-    {
-        const CBlockIndex* pindexSync = AutoSelectSyncCheckpoint();
-        if (nHeight <= pindexSync->nHeight){
-            return false;
-        }
+bool CheckBlock(int nHeight, const uint256& hash, bool fMatchesCheckpoint)
+{
+    if (!fEnabled)
         return true;
-    }
+
+    const MapCheckpoints& checkpoints = *Params().Checkpoints().mapCheckpoints;
+
+    MapCheckpoints::const_iterator i = checkpoints.find(nHeight);
+    // If looking for an exact match, then return false
+    if (i == checkpoints.end()) return !fMatchesCheckpoint;
+    return hash == i->second;
 }
+
+//! Guess how far we are in the verification process at the given block index
+double GuessVerificationProgress(CBlockIndex* pindex, bool fSigchecks)
+{
+    if (pindex == NULL)
+        return 0.0;
+
+    int64_t nNow = time(NULL);
+
+    double fSigcheckVerificationFactor = fSigchecks ? SIGCHECK_VERIFICATION_FACTOR : 1.0;
+    double fWorkBefore = 0.0; // Amount of work done before pindex
+    double fWorkAfter = 0.0;  // Amount of work left after pindex (estimated)
+    // Work is defined as: 1.0 per transaction before the last checkpoint, and
+    // fSigcheckVerificationFactor per transaction after.
+
+    const CCheckpointData& data = Params().Checkpoints();
+
+    if (pindex->nChainTx <= data.nTransactionsLastCheckpoint) {
+        double nCheapBefore = pindex->nChainTx;
+        double nCheapAfter = data.nTransactionsLastCheckpoint - pindex->nChainTx;
+        double nExpensiveAfter = (nNow - data.nTimeLastCheckpoint) / 86400.0 * data.fTransactionsPerDay;
+        fWorkBefore = nCheapBefore;
+        fWorkAfter = nCheapAfter + nExpensiveAfter * fSigcheckVerificationFactor;
+    } else {
+        double nCheapBefore = data.nTransactionsLastCheckpoint;
+        double nExpensiveBefore = pindex->nChainTx - data.nTransactionsLastCheckpoint;
+        double nExpensiveAfter = (nNow - pindex->GetBlockTime()) / 86400.0 * data.fTransactionsPerDay;
+        fWorkBefore = nCheapBefore + nExpensiveBefore * fSigcheckVerificationFactor;
+        fWorkAfter = nExpensiveAfter * fSigcheckVerificationFactor;
+    }
+
+    return fWorkBefore / (fWorkBefore + fWorkAfter);
+}
+
+int GetTotalBlocksEstimate()
+{
+    if (!fEnabled)
+        return 0;
+
+    const MapCheckpoints& checkpoints = *Params().Checkpoints().mapCheckpoints;
+
+    return checkpoints.rbegin()->first;
+}
+
+CBlockIndex* GetLastCheckpoint()
+{
+    if (!fEnabled)
+        return NULL;
+
+    const MapCheckpoints& checkpoints = *Params().Checkpoints().mapCheckpoints;
+
+    BOOST_REVERSE_FOREACH (const MapCheckpoints::value_type& i, checkpoints) {
+        const uint256& hash = i.second;
+        BlockMap::const_iterator t = mapBlockIndex.find(hash);
+        if (t != mapBlockIndex.end())
+            return t->second;
+    }
+    return NULL;
+}
+
+} // namespace Checkpoints

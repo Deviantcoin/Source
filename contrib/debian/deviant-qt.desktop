@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Deviant
+Comment=Deviant P2P Cryptocurrency
+Comment[fr]=Deviant, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Deviant, eşten eşe kriptografik sanal para birimi
+Exec=deviant-qt %u
+Terminal=false
+Type=Application
+Icon=deviant128
+MimeType=x-scheme-handler/deviant;
+Categories=Office;Finance;

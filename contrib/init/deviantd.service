@@ -1,0 +1,26 @@
+[Unit]
+Description=Deviant's distributed currency daemon
+After=network.target
+
+[Service]
+User=deviant
+Group=deviant
+
+Type=forking
+PIDFile=/var/lib/deviantd/deviantd.pid
+
+ExecStart=/usr/bin/deviantd -daemon -pid=/var/lib/deviantd/deviantd.pid \
+          -conf=/etc/deviant/deviant.conf -datadir=/var/lib/deviantd
+
+ExecStop=-/usr/bin/deviant-cli -conf=/etc/deviant/deviant.conf \
+         -datadir=/var/lib/deviantd stop
+
+Restart=always
+PrivateTmp=true
+TimeoutStopSec=60s
+TimeoutStartSec=2s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target
