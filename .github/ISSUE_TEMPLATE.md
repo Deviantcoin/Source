@@ -1,7 +1,7 @@
 <!--- Remove this description and sections that do not apply -->
 
 This issue tracker is only for technical issues related to Deviant Core.
-General DEVIANT questions and/or support requests and are best directed to the [DEVIANT Slack](http://deviant-coin.slack.com).
+General DEVIANT questions and/or support requests and are best directed to the [DEVIANT Email] cointact@deviantcoin.io
 
 ### Describe the issue
 
