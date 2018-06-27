@@ -1,6 +1,6 @@
-# Wallet
-Wallet section for Deviant Coin
+# Wallets
 
+https://github.com/Deviantcoin/Source/releases
 
 Wallet Masternode Setup Guides https://github.com/Deviantcoin/Wallet/wiki
 
