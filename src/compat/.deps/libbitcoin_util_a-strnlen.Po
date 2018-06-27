@@ -1,0 +1,43 @@
+compat/libbitcoin_util_a-strnlen.o: compat/strnlen.cpp \
+ config/deviant-config.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/cstring \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/i686-w64-mingw32/bits/c++config.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/i686-w64-mingw32/bits/os_defines.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/i686-w64-mingw32/bits/cpu_defines.h \
+ /usr/share/mingw-w64/include/string.h \
+ /usr/share/mingw-w64/include/crtdefs.h \
+ /usr/share/mingw-w64/include/_mingw.h \
+ /usr/share/mingw-w64/include/_mingw_mac.h \
+ /usr/share/mingw-w64/include/_mingw_secapi.h \
+ /usr/share/mingw-w64/include/vadefs.h \
+ /usr/share/mingw-w64/include/sdks/_mingw_directx.h \
+ /usr/share/mingw-w64/include/sdks/_mingw_ddk.h \
+ /usr/share/mingw-w64/include/sec_api/string_s.h
+
+config/deviant-config.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/cstring:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/i686-w64-mingw32/bits/c++config.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/i686-w64-mingw32/bits/os_defines.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/i686-w64-mingw32/bits/cpu_defines.h:
+
+/usr/share/mingw-w64/include/string.h:
+
+/usr/share/mingw-w64/include/crtdefs.h:
+
+/usr/share/mingw-w64/include/_mingw.h:
+
+/usr/share/mingw-w64/include/_mingw_mac.h:
+
+/usr/share/mingw-w64/include/_mingw_secapi.h:
+
+/usr/share/mingw-w64/include/vadefs.h:
+
+/usr/share/mingw-w64/include/sdks/_mingw_directx.h:
+
+/usr/share/mingw-w64/include/sdks/_mingw_ddk.h:
+
+/usr/share/mingw-w64/include/sec_api/string_s.h:

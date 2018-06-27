@@ -1,0 +1,43 @@
+compat/libbitcoin_util_a-glibc_sanity.o: compat/glibc_sanity.cpp \
+ config/deviant-config.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/cstddef \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/i686-w64-mingw32/bits/c++config.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/i686-w64-mingw32/bits/os_defines.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/i686-w64-mingw32/bits/cpu_defines.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/stddef.h \
+ /usr/share/mingw-w64/include/stddef.h \
+ /usr/share/mingw-w64/include/crtdefs.h \
+ /usr/share/mingw-w64/include/_mingw.h \
+ /usr/share/mingw-w64/include/_mingw_mac.h \
+ /usr/share/mingw-w64/include/_mingw_secapi.h \
+ /usr/share/mingw-w64/include/vadefs.h \
+ /usr/share/mingw-w64/include/sdks/_mingw_directx.h \
+ /usr/share/mingw-w64/include/sdks/_mingw_ddk.h
+
+config/deviant-config.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/cstddef:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/i686-w64-mingw32/bits/c++config.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/i686-w64-mingw32/bits/os_defines.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/i686-w64-mingw32/bits/cpu_defines.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/stddef.h:
+
+/usr/share/mingw-w64/include/stddef.h:
+
+/usr/share/mingw-w64/include/crtdefs.h:
+
+/usr/share/mingw-w64/include/_mingw.h:
+
+/usr/share/mingw-w64/include/_mingw_mac.h:
+
+/usr/share/mingw-w64/include/_mingw_secapi.h:
+
+/usr/share/mingw-w64/include/vadefs.h:
+
+/usr/share/mingw-w64/include/sdks/_mingw_directx.h:
+
+/usr/share/mingw-w64/include/sdks/_mingw_ddk.h:

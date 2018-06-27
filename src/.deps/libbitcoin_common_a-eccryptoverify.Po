@@ -1,0 +1,165 @@
+libbitcoin_common_a-eccryptoverify.o: eccryptoverify.cpp eccryptoverify.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/cstdlib \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/i686-w64-mingw32/bits/c++config.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/i686-w64-mingw32/bits/os_defines.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/i686-w64-mingw32/bits/cpu_defines.h \
+ /usr/share/mingw-w64/include/stdlib.h \
+ /usr/share/mingw-w64/include/crtdefs.h \
+ /usr/share/mingw-w64/include/_mingw.h \
+ /usr/share/mingw-w64/include/_mingw_mac.h \
+ /usr/share/mingw-w64/include/_mingw_secapi.h \
+ /usr/share/mingw-w64/include/vadefs.h \
+ /usr/share/mingw-w64/include/sdks/_mingw_directx.h \
+ /usr/share/mingw-w64/include/sdks/_mingw_ddk.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include-fixed/limits.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include-fixed/syslimits.h \
+ /usr/share/mingw-w64/include/limits.h \
+ /usr/share/mingw-w64/include/sec_api/stdlib_s.h \
+ /usr/share/mingw-w64/include/malloc.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/vector \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/stl_algobase.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/functexcept.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/exception_defines.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/cpp_type_traits.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/ext/type_traits.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/ext/numeric_traits.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/stl_pair.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/move.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/concept_check.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/type_traits \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/stl_iterator_base_types.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/stl_iterator_base_funcs.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/debug/debug.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/stl_iterator.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/ptr_traits.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/predefined_ops.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/allocator.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/i686-w64-mingw32/bits/c++allocator.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/ext/new_allocator.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/new \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/exception \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/atomic_lockfree_defines.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/exception_ptr.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/nested_exception.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/memoryfwd.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/stl_construct.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/ext/alloc_traits.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/alloc_traits.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/stl_uninitialized.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/stl_vector.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/initializer_list \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/stl_bvector.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/functional_hash.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/hash_bytes.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/range_access.h \
+ /usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/vector.tcc
+
+eccryptoverify.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/cstdlib:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/i686-w64-mingw32/bits/c++config.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/i686-w64-mingw32/bits/os_defines.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/i686-w64-mingw32/bits/cpu_defines.h:
+
+/usr/share/mingw-w64/include/stdlib.h:
+
+/usr/share/mingw-w64/include/crtdefs.h:
+
+/usr/share/mingw-w64/include/_mingw.h:
+
+/usr/share/mingw-w64/include/_mingw_mac.h:
+
+/usr/share/mingw-w64/include/_mingw_secapi.h:
+
+/usr/share/mingw-w64/include/vadefs.h:
+
+/usr/share/mingw-w64/include/sdks/_mingw_directx.h:
+
+/usr/share/mingw-w64/include/sdks/_mingw_ddk.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include-fixed/limits.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include-fixed/syslimits.h:
+
+/usr/share/mingw-w64/include/limits.h:
+
+/usr/share/mingw-w64/include/sec_api/stdlib_s.h:
+
+/usr/share/mingw-w64/include/malloc.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/vector:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/stl_algobase.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/functexcept.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/exception_defines.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/cpp_type_traits.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/ext/type_traits.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/ext/numeric_traits.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/stl_pair.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/move.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/concept_check.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/type_traits:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/stl_iterator_base_types.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/stl_iterator_base_funcs.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/debug/debug.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/stl_iterator.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/ptr_traits.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/predefined_ops.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/allocator.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/i686-w64-mingw32/bits/c++allocator.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/ext/new_allocator.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/new:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/exception:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/atomic_lockfree_defines.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/exception_ptr.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/nested_exception.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/memoryfwd.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/stl_construct.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/ext/alloc_traits.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/alloc_traits.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/stl_uninitialized.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/stl_vector.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/initializer_list:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/stl_bvector.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/functional_hash.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/hash_bytes.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/range_access.h:
+
+/usr/lib/gcc/i686-w64-mingw32/5.3-posix/include/c++/bits/vector.tcc:
