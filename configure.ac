@@ -13,7 +13,7 @@ AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([build-aux/m4])
 
 BITCOIN_DAEMON_NAME=deviantd
-BITCOIN_GUI_NAME=Deviant-qt
+BITCOIN_GUI_NAME=deviant-qt
 BITCOIN_CLI_NAME=deviant-cli
 BITCOIN_TX_NAME=deviant-tx
 
