@@ -13,6 +13,7 @@
 #include <QLineEdit>
 #include <QMessageBox>
 #include <boost/lexical_cast.hpp>
+#include <QStyle>
 
 using namespace std;
 using namespace boost;
