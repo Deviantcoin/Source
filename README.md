@@ -1,4 +1,3 @@
-# Wallets
 
 https://github.com/Deviantcoin/Source/releases
 
