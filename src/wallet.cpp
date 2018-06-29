@@ -1200,9 +1200,9 @@ CAmount CWalletTx::GetLockedCredit() const
         }
 
         // Add masternode collaterals which are handled likc locked coins
-        if (fMasterNode && vout[i].nValue == 5000 * COIN) {
-            nCredit += pwallet->GetCredit(txout, ISMINE_SPENDABLE);
-        }
+        //if (fMasterNode && vout[i].nValue == 5000 * COIN) {
+            //nCredit += pwallet->GetCredit(txout, ISMINE_SPENDABLE);
+        //}
 
         if (!MoneyRange(nCredit))
             throw std::runtime_error("CWalletTx::GetLockedCredit() : value out of range");
