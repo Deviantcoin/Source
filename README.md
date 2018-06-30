@@ -48,7 +48,7 @@ https://github.com/Deviantcoin/Source/releases
 ### Reward Distribution
 <table>
 <tr><td><u><b>◆BLOCKHEIGHT</b></u></td><td><u><b>◆ POS(%) </b></u></td><td><u><b>◆ MN(%) </b></u></td><td><u><b>◆ BLOCKREWARD </b></u></td><td><u><b>◆ POSREWARD </b></u></td><td><u><b>◆ MNREWARD </b></u></td></tr>
-<tr><td>◆501-100000 </td><td>20 </td><td> 80 </td><td> 20 </td><td> 4 </td><td> 16 </td></tr>
+<tr><td>◆501-100000 </td><td> 20 </td><td> 80 </td><td> 20 </td><td> 4 </td><td> 16 </td></tr>
 <tr><td>◆100001-225650 </td><td> 10 </td><td> 90 </td><td> 20 </td><td> 2 </td><td> 18 </td></tr>
 <tr><td>◆225650-751300 </td><td> 10 </td><td> 90 </td><td> 16.4 </td><td> 1.64 </td><td> 14.76 </td></tr>
 <tr><td>◆751301-1276950 </td><td> 10 </td><td> 90 </td><td> 13.45 </td><td> 1.34 </td><td> 12.1 </td></tr>
