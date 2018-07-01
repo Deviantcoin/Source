@@ -1,18 +1,18 @@
 /****************************************************************************************/
 /* Global color codes:                                                                  */
-/* dark-purple:        #000000                                                          */
-/* transparent-purple: #d0e9f0 (for inactive backgrounds)                               */
+/* black:               #000000                                                         */
+/* Light grayish cyan:  #d0e9f0 (for inactive backgrounds)                              */
 /*                                                                                      */
-/* light-purple1:      #05B4EF (main purple for white backgrounds)                      */
-/* light-purple2:      #17a0ce (sligtly darker for gradients)                           */
+/* vivid-blue:          #05B4EF (main blue for white backgrounds)                       */
+/* strong-blue:         #17a0ce (sligtly darker for gradients)                          */
 /*                                                                                      */
-/* medium-purple1:     #2660a7 (on hover)                                               */
-/* medium-purple1:     #000000 (main purple for dark backgrounds)                       */
-/* medium-purple2:     #000000 (sligtly darker for gradients)                           */
+/* dark-blue:           #2660a7 (on hover)                                              */
+/* black:               #000000 (dark backgrounds)                                      */
+/* black:               #000000 (darker for gradients)                                  */
 /*                                                                                      */
-/* fuchsia:            #df1cca                                                          */
-/* background:         #f8f6f6                                                          */
-/* input fields:       #e7e7e7                                                          */
+/* vivid-magenta:       #df1cca                                                         */
+/* Light-grayish-red:   #f8f6fa6 (background)                                           */
+/* Very-light-gray:     #e7e7e7 (input field)                                           */
 /****************************************************************************************/
 /*                                                                                      */
 /* Note: it's sometimes not easy to figure out all those screen elements, so unused     */
@@ -459,7 +459,7 @@ WalletFrame {
     QTableWidget:focus, QTableView, QTableView:focus { /* Remove focus outline */
     outline:0;
     background:transparent;
-    color:white;
+/*    color:white; */ /* no white text on white background */
     }
     
     QTreeWidget { /* Tree Background */
