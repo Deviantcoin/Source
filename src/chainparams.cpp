@@ -191,8 +191,8 @@ public:
         vSeeds.push_back(CDNSSeedData("seed3.deviantcoin.io", "seed3.deviantcoin.io"));           
 	vSeeds.push_back(CDNSSeedData("seed4.deviantcoin.io", "seed4.deviantcoin.io"));           
 	vSeeds.push_back(CDNSSeedData("seed5.deviantcoin.io", "seed5.deviantcoin.io"));           
-	vSeeds.push_back(CDNSSeedData("seed6.deviantcoin.io", "seed6.deviantcoin.io"));          
-        vSeeds.push_back(CDNSSeedData("seed7.deviantcoin.io", "seed7.deviantcoin.io"));   
+	vSeeds.push_back(CDNSSeedData("138.197.146.236", "138.197.146.236"));          
+        vSeeds.push_back(CDNSSeedData("209.97.131.20", "209.97.131.20"));   
      
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 90);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 10);
