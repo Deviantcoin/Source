@@ -29,7 +29,7 @@ https://github.com/Deviantcoin/Source/releases
 
 <table>
 <tr><td>RPC Port</td><td>22617</td></tr>
-<tr><td>P2P Port/td><td>22618</td></tr>
+<tr><td>P2P Port</td><td>22618</td></tr>
 <tr><td>Explorer</td><td>http://209.97.131.20</td></tr>
 </table>
 
