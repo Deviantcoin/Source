@@ -1,7 +1,7 @@
 Deviant Core integration/staging repository
 =====================================
 
-Deviant is an open source crypto-currency focused on fast private transactions with low transaction fees & environmental footprint.  It utilizes a custom Proof of Stake protocol for securing its network and uses an innovative variable seesaw reward mechanism that dynamically balances 90% of its block reward size between masternodes and staking nodes and 10% dedicated for budget proposals. The goal of Deviant is to achieve a decentralized sustainable crypto currency with near instant full-time private transactions, fair governance and community intelligence.
+Deviant is an open source crypto-currency focused on fast private transactions with low transaction fees & environmental footprint.  It utilizes a custom Proof of Stake protocol for securing its network . The goal of Deviant is to achieve a decentralized sustainable crypto currency with near instant full-time private transactions, fair governance and community intelligence.
 - Anonymized transactions using the [_Zerocoin Protocol_]
 - Fast transactions featuring guaranteed zero confirmation transactions.
 - Decentralized blockchain voting utilizing Masternode technology to form a DAO. The blockchain will distribute monthly treasury funds based on successful proposals submitted by the community and voted on by the DAO.
@@ -16,6 +16,8 @@ More information at [deviantcoin.io](http://www.deviantcoin.io) Visit our ANN th
 <tr><td>Max Coin Supply (PoW Phase)</td><td>4,100,000 DEV</td></tr>
 <tr><td>Max Coin Supply (PoS Phase)</td><td>88,000,000 DEV</td></tr>
 <tr><td>Premine</td><td>4,100,000 DEV*</td></tr>
+<tr><td>Coins Burned</td><td>880,000 DEV*</td></tr>
+
 </table>
 
 
