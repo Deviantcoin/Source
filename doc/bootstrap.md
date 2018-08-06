@@ -31,7 +31,6 @@ The directory is hidden in your User folder. Go to:
 	~/.DeviantCore/
     
 ### Importing the blockchain
-Now start the Deviant client software. It should show "Importing blocks from disk" like the image below. 
-![Fig5](img/bootstrap5.png)
+Now start the Deviant client software. It should show "Importing blocks from disk" 
 
 Wait until the import finishes. The client will download the last days not covered by the import. Congratulations you have successfully imported the blockchain!
