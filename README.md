@@ -16,6 +16,7 @@ More information at [deviantcoin.io](http://www.deviantcoin.io) Visit our ANN th
 <tr><td>Max Coin Supply (PoW Phase)</td><td>4,100,000 DEV</td></tr>
 <tr><td>Max Coin Supply (PoS Phase)</td><td>88,000,000 DEV</td></tr>
 <tr><td>Premine</td><td>4,100,000 DEV*</td></tr>
+<tr><td>Block Halving</td><td>-18% / Year</td></tr>
 <tr><td>Coins Burned</td><td>880,000 DEV*</td></tr>
 
 </table>
