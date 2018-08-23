@@ -178,7 +178,7 @@ public:
         genesis.hashPrevBlock = 0;
         genesis.hashMerkleRoot = genesis.BuildMerkleTree();
         genesis.nVersion = 1;
-        genesis.nTime = 1529589600;
+        genesis.nTime = 1529589600; // Thursday, June 21, 2018 2:00:00 PM GMT
         genesis.nBits = 0x1e0ffff0;
         genesis.nNonce = 419026;
 
@@ -272,7 +272,7 @@ public:
         nModifierUpdateBlock = 51197; //approx Mon, 17 Apr 2017 04:00:00 GMT
         nMaxMoneyOut = 43199500 * COIN;
         nZerocoinStartHeight = 201576;
-        nZerocoinStartTime = 1501776000;
+        nZerocoinStartTime = 1501776000; // Thursday, August 3, 2017 4:00:00 PM GMT
         nBlockEnforceSerialRange = 1; //Enforce serial range starting this block
         nBlockRecalculateAccumulators = 9908000; //Trigger a recalculation of accumulators
         nBlockFirstFraudulent = 9891737; //First block that bad serials emerged
@@ -284,7 +284,7 @@ public:
         nRejectOldSporkKey = 1522454400; //!> Reject old spork key after Saturday, March 31, 2018 12:00:00 AM GMT
 
         //! Modify the testnet genesis block so the timestamp is valid for a later start.
-        genesis.nTime = 1522920805;
+        genesis.nTime = 1501776000; // Thursday, August 3, 2017 4:00:00 PM GMT
         genesis.nNonce = 1254338;
 
         hashGenesisBlock = genesis.GetHash();
@@ -354,7 +354,7 @@ public:
         nTargetTimespan = 24 * 60 * 60; // Deviant: 1 day
         nTargetSpacing = 1 * 60;        // Deviant: 1 minutes
         bnProofOfWorkLimit = ~uint256(0) >> 1;
-        genesis.nTime = 1522922005;
+        genesis.nTime = 1501776000; // Thursday, August 3, 2017 4:00:00 PM GMT
         genesis.nBits = 0x1e0ffff0;
         genesis.nNonce = 155014;
 
