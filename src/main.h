@@ -122,7 +122,7 @@ static const unsigned char REJECT_INSUFFICIENTFEE = 0x42;
 static const unsigned char REJECT_CHECKPOINT = 0x43;
 
 struct BlockHasher {
-	size_t operator()(const uint256& hash) const { return hash.GetLow64(); }
+    size_t operator()(const uint256& hash) const { return hash.GetLow64(); }
 };
 
 extern CScript COINBASE_FLAGS;
@@ -267,38 +267,38 @@ bool GetCoinAge(const CTransaction& tx, unsigned int nTxTime, uint64_t& nCoinAge
 int GetIXConfirmations(uint256 nTXHash);
 
 struct CNodeStateStats {
-	int nMisbehavior;
-	int nSyncHeight;
-	int nCommonHeight;
-	std::vector<int> vHeightInFlight;
+    int nMisbehavior;
+    int nSyncHeight;
+    int nCommonHeight;
+    std::vector<int> vHeightInFlight;
 };
 
 struct CDiskTxPos : public CDiskBlockPos {
-	unsigned int nTxOffset; // after header
+    unsigned int nTxOffset; // after header
 
-	ADD_SERIALIZE_METHODS;
+    ADD_SERIALIZE_METHODS;
 
-	template <typename Stream, typename Operation>
-	inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion)
-	{
-		READWRITE(*(CDiskBlockPos*)this);
-		READWRITE(VARINT(nTxOffset));
-	}
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion)
+    {
+        READWRITE(*(CDiskBlockPos*)this);
+        READWRITE(VARINT(nTxOffset));
+    }
 
-	CDiskTxPos(const CDiskBlockPos& blockIn, unsigned int nTxOffsetIn) : CDiskBlockPos(blockIn.nFile, blockIn.nPos), nTxOffset(nTxOffsetIn)
-	{
-	}
+    CDiskTxPos(const CDiskBlockPos& blockIn, unsigned int nTxOffsetIn) : CDiskBlockPos(blockIn.nFile, blockIn.nPos), nTxOffset(nTxOffsetIn)
+    {
+    }
 
-	CDiskTxPos()
-	{
-		SetNull();
-	}
+    CDiskTxPos()
+    {
+        SetNull();
+    }
 
-	void SetNull()
-	{
-		CDiskBlockPos::SetNull();
-		nTxOffset = 0;
-	}
+    void SetNull()
+    {
+        CDiskBlockPos::SetNull();
+        nTxOffset = 0;
+    }
 };
 
 
@@ -317,11 +317,11 @@ bool MoneyRange(CAmount nValueOut);
  *   DUP CHECKSIG DROP ... repeated 100 times... OP_1
  */
 
- /**
-  * Check for standard transaction types
-  * @param[in] mapInputs    Map of previous transactions that have outputs we're spending
-  * @return True if all inputs (scriptSigs) use only standard transaction forms
-  */
+/**
+ * Check for standard transaction types
+ * @param[in] mapInputs    Map of previous transactions that have outputs we're spending
+ * @return True if all inputs (scriptSigs) use only standard transaction forms
+ */
 bool AreInputsStandard(const CTransaction& tx, const CCoinsViewCache& mapInputs);
 
 /**
@@ -401,18 +401,18 @@ bool IsFinalTx(const CTransaction& tx, int nBlockHeight = 0, int64_t nBlockTime 
 class CBlockUndo
 {
 public:
-	std::vector<CTxUndo> vtxundo; // for all but the coinbase
+    std::vector<CTxUndo> vtxundo; // for all but the coinbase
 
-	ADD_SERIALIZE_METHODS;
+    ADD_SERIALIZE_METHODS;
 
-	template <typename Stream, typename Operation>
-	inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion)
-	{
-		READWRITE(vtxundo);
-	}
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion)
+    {
+        READWRITE(vtxundo);
+    }
 
-	bool WriteToDisk(CDiskBlockPos& pos, const uint256& hashBlock);
-	bool ReadFromDisk(const CDiskBlockPos& pos, const uint256& hashBlock);
+    bool WriteToDisk(CDiskBlockPos& pos, const uint256& hashBlock);
+    bool ReadFromDisk(const CDiskBlockPos& pos, const uint256& hashBlock);
 };
 
 
@@ -423,31 +423,31 @@ public:
 class CScriptCheck
 {
 private:
-	CScript scriptPubKey;
-	const CTransaction* ptxTo;
-	unsigned int nIn;
-	unsigned int nFlags;
-	bool cacheStore;
-	ScriptError error;
+    CScript scriptPubKey;
+    const CTransaction* ptxTo;
+    unsigned int nIn;
+    unsigned int nFlags;
+    bool cacheStore;
+    ScriptError error;
 
 public:
-	CScriptCheck() : ptxTo(0), nIn(0), nFlags(0), cacheStore(false), error(SCRIPT_ERR_UNKNOWN_ERROR) {}
-	CScriptCheck(const CCoins& txFromIn, const CTransaction& txToIn, unsigned int nInIn, unsigned int nFlagsIn, bool cacheIn) : scriptPubKey(txFromIn.vout[txToIn.vin[nInIn].prevout.n].scriptPubKey),
-		ptxTo(&txToIn), nIn(nInIn), nFlags(nFlagsIn), cacheStore(cacheIn), error(SCRIPT_ERR_UNKNOWN_ERROR) {}
+    CScriptCheck() : ptxTo(0), nIn(0), nFlags(0), cacheStore(false), error(SCRIPT_ERR_UNKNOWN_ERROR) {}
+    CScriptCheck(const CCoins& txFromIn, const CTransaction& txToIn, unsigned int nInIn, unsigned int nFlagsIn, bool cacheIn) : scriptPubKey(txFromIn.vout[txToIn.vin[nInIn].prevout.n].scriptPubKey),
+                                                                                                                                ptxTo(&txToIn), nIn(nInIn), nFlags(nFlagsIn), cacheStore(cacheIn), error(SCRIPT_ERR_UNKNOWN_ERROR) {}
 
-	bool operator()();
+    bool operator()();
 
-	void swap(CScriptCheck& check)
-	{
-		scriptPubKey.swap(check.scriptPubKey);
-		std::swap(ptxTo, check.ptxTo);
-		std::swap(nIn, check.nIn);
-		std::swap(nFlags, check.nFlags);
-		std::swap(cacheStore, check.cacheStore);
-		std::swap(error, check.error);
-	}
+    void swap(CScriptCheck& check)
+    {
+        scriptPubKey.swap(check.scriptPubKey);
+        std::swap(ptxTo, check.ptxTo);
+        std::swap(nIn, check.nIn);
+        std::swap(nFlags, check.nFlags);
+        std::swap(cacheStore, check.cacheStore);
+        std::swap(error, check.error);
+    }
 
-	ScriptError GetScriptError() const { return error; }
+    ScriptError GetScriptError() const { return error; }
 };
 
 
@@ -491,141 +491,141 @@ bool AcceptBlockHeader(const CBlockHeader& block, CValidationState& state, CBloc
 class CBlockFileInfo
 {
 public:
-	unsigned int nBlocks;      //! number of blocks stored in file
-	unsigned int nSize;        //! number of used bytes of block file
-	unsigned int nUndoSize;    //! number of used bytes in the undo file
-	unsigned int nHeightFirst; //! lowest height of block in file
-	unsigned int nHeightLast;  //! highest height of block in file
-	uint64_t nTimeFirst;       //! earliest time of block in file
-	uint64_t nTimeLast;        //! latest time of block in file
+    unsigned int nBlocks;      //! number of blocks stored in file
+    unsigned int nSize;        //! number of used bytes of block file
+    unsigned int nUndoSize;    //! number of used bytes in the undo file
+    unsigned int nHeightFirst; //! lowest height of block in file
+    unsigned int nHeightLast;  //! highest height of block in file
+    uint64_t nTimeFirst;       //! earliest time of block in file
+    uint64_t nTimeLast;        //! latest time of block in file
 
-	ADD_SERIALIZE_METHODS;
+    ADD_SERIALIZE_METHODS;
 
-	template <typename Stream, typename Operation>
-	inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion)
-	{
-		READWRITE(VARINT(nBlocks));
-		READWRITE(VARINT(nSize));
-		READWRITE(VARINT(nUndoSize));
-		READWRITE(VARINT(nHeightFirst));
-		READWRITE(VARINT(nHeightLast));
-		READWRITE(VARINT(nTimeFirst));
-		READWRITE(VARINT(nTimeLast));
-	}
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion)
+    {
+        READWRITE(VARINT(nBlocks));
+        READWRITE(VARINT(nSize));
+        READWRITE(VARINT(nUndoSize));
+        READWRITE(VARINT(nHeightFirst));
+        READWRITE(VARINT(nHeightLast));
+        READWRITE(VARINT(nTimeFirst));
+        READWRITE(VARINT(nTimeLast));
+    }
 
-	void SetNull()
-	{
-		nBlocks = 0;
-		nSize = 0;
-		nUndoSize = 0;
-		nHeightFirst = 0;
-		nHeightLast = 0;
-		nTimeFirst = 0;
-		nTimeLast = 0;
-	}
+    void SetNull()
+    {
+        nBlocks = 0;
+        nSize = 0;
+        nUndoSize = 0;
+        nHeightFirst = 0;
+        nHeightLast = 0;
+        nTimeFirst = 0;
+        nTimeLast = 0;
+    }
 
-	CBlockFileInfo()
-	{
-		SetNull();
-	}
+    CBlockFileInfo()
+    {
+        SetNull();
+    }
 
-	std::string ToString() const;
+    std::string ToString() const;
 
-	/** update statistics (does not update nSize) */
-	void AddBlock(unsigned int nHeightIn, uint64_t nTimeIn)
-	{
-		if (nBlocks == 0 || nHeightFirst > nHeightIn)
-			nHeightFirst = nHeightIn;
-		if (nBlocks == 0 || nTimeFirst > nTimeIn)
-			nTimeFirst = nTimeIn;
-		nBlocks++;
-		if (nHeightIn > nHeightLast)
-			nHeightLast = nHeightIn;
-		if (nTimeIn > nTimeLast)
-			nTimeLast = nTimeIn;
-	}
+    /** update statistics (does not update nSize) */
+    void AddBlock(unsigned int nHeightIn, uint64_t nTimeIn)
+    {
+        if (nBlocks == 0 || nHeightFirst > nHeightIn)
+            nHeightFirst = nHeightIn;
+        if (nBlocks == 0 || nTimeFirst > nTimeIn)
+            nTimeFirst = nTimeIn;
+        nBlocks++;
+        if (nHeightIn > nHeightLast)
+            nHeightLast = nHeightIn;
+        if (nTimeIn > nTimeLast)
+            nTimeLast = nTimeIn;
+    }
 };
 
 /** Capture information about block/transaction validation */
 class CValidationState
 {
 private:
-	enum mode_state {
-		MODE_VALID,   //! everything ok
-		MODE_INVALID, //! network rule violation (DoS value may be set)
-		MODE_ERROR,   //! run-time error
-	} mode;
-	int nDoS;
-	std::string strRejectReason;
-	unsigned char chRejectCode;
-	bool corruptionPossible;
+    enum mode_state {
+        MODE_VALID,   //! everything ok
+        MODE_INVALID, //! network rule violation (DoS value may be set)
+        MODE_ERROR,   //! run-time error
+    } mode;
+    int nDoS;
+    std::string strRejectReason;
+    unsigned char chRejectCode;
+    bool corruptionPossible;
 
 public:
-	CValidationState() : mode(MODE_VALID), nDoS(0), chRejectCode(0), corruptionPossible(false) {}
-	bool DoS(int level, bool ret = false, unsigned char chRejectCodeIn = 0, std::string strRejectReasonIn = "", bool corruptionIn = false)
-	{
-		chRejectCode = chRejectCodeIn;
-		strRejectReason = strRejectReasonIn;
-		corruptionPossible = corruptionIn;
-		if (mode == MODE_ERROR)
-			return ret;
-		nDoS += level;
-		mode = MODE_INVALID;
-		return ret;
-	}
-	bool Invalid(bool ret = false,
-		unsigned char _chRejectCode = 0,
-		std::string _strRejectReason = "")
-	{
-		return DoS(0, ret, _chRejectCode, _strRejectReason);
-	}
-	bool Error(std::string strRejectReasonIn = "")
-	{
-		if (mode == MODE_VALID)
-			strRejectReason = strRejectReasonIn;
-		mode = MODE_ERROR;
-		return false;
-	}
-	bool Abort(const std::string& msg)
-	{
-		AbortNode(msg);
-		return Error(msg);
-	}
-	bool IsValid() const
-	{
-		return mode == MODE_VALID;
-	}
-	bool IsInvalid() const
-	{
-		return mode == MODE_INVALID;
-	}
-	bool IsError() const
-	{
-		return mode == MODE_ERROR;
-	}
-	bool IsInvalid(int& nDoSOut) const
-	{
-		if (IsInvalid()) {
-			nDoSOut = nDoS;
-			return true;
-		}
-		return false;
-	}
-	bool CorruptionPossible() const
-	{
-		return corruptionPossible;
-	}
-	unsigned char GetRejectCode() const { return chRejectCode; }
-	std::string GetRejectReason() const { return strRejectReason; }
+    CValidationState() : mode(MODE_VALID), nDoS(0), chRejectCode(0), corruptionPossible(false) {}
+    bool DoS(int level, bool ret = false, unsigned char chRejectCodeIn = 0, std::string strRejectReasonIn = "", bool corruptionIn = false)
+    {
+        chRejectCode = chRejectCodeIn;
+        strRejectReason = strRejectReasonIn;
+        corruptionPossible = corruptionIn;
+        if (mode == MODE_ERROR)
+            return ret;
+        nDoS += level;
+        mode = MODE_INVALID;
+        return ret;
+    }
+    bool Invalid(bool ret = false,
+        unsigned char _chRejectCode = 0,
+        std::string _strRejectReason = "")
+    {
+        return DoS(0, ret, _chRejectCode, _strRejectReason);
+    }
+    bool Error(std::string strRejectReasonIn = "")
+    {
+        if (mode == MODE_VALID)
+            strRejectReason = strRejectReasonIn;
+        mode = MODE_ERROR;
+        return false;
+    }
+    bool Abort(const std::string& msg)
+    {
+        AbortNode(msg);
+        return Error(msg);
+    }
+    bool IsValid() const
+    {
+        return mode == MODE_VALID;
+    }
+    bool IsInvalid() const
+    {
+        return mode == MODE_INVALID;
+    }
+    bool IsError() const
+    {
+        return mode == MODE_ERROR;
+    }
+    bool IsInvalid(int& nDoSOut) const
+    {
+        if (IsInvalid()) {
+            nDoSOut = nDoS;
+            return true;
+        }
+        return false;
+    }
+    bool CorruptionPossible() const
+    {
+        return corruptionPossible;
+    }
+    unsigned char GetRejectCode() const { return chRejectCode; }
+    std::string GetRejectReason() const { return strRejectReason; }
 };
 
 /** RAII wrapper for VerifyDB: Verify consistency of the block and coin databases */
 class CVerifyDB
 {
 public:
-	CVerifyDB();
-	~CVerifyDB();
-	bool VerifyDB(CCoinsView* coinsview, int nCheckLevel, int nCheckDepth);
+    CVerifyDB();
+    ~CVerifyDB();
+    bool VerifyDB(CCoinsView* coinsview, int nCheckLevel, int nCheckDepth);
 };
 
 /** Find the last common block between the parameter chain and a locator. */
@@ -653,9 +653,9 @@ extern CZerocoinDB* zerocoinDB;
 extern CSporkDB* pSporkDB;
 
 struct CBlockTemplate {
-	CBlock block;
-	std::vector<CAmount> vTxFees;
-	std::vector<int64_t> vTxSigOps;
+    CBlock block;
+    std::vector<CAmount> vTxFees;
+    std::vector<int64_t> vTxSigOps;
 };
 
 #endif // BITCOIN_MAIN_H
