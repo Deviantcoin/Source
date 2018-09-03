@@ -5,6 +5,7 @@
 
 #include "blocksignature.h"
 #include "main.h"
+#include "zdevchain.h"
 
 bool SignBlockWithKey(CBlock& block, const CKey& key)
 {

@@ -25,6 +25,7 @@
 #include "txdb.h"
 #include "util.h"
 #include "utilmoneystr.h"
+#include "zdevchain.h"
 
 #include "denomination_functions.h"
 #include "libzerocoin/Denominations.h"
