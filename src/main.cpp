@@ -2753,7 +2753,7 @@ bool RecalculateDEVSupply(int nHeightStart)
 bool ReindexAccumulators(list<uint256>& listMissingCheckpoints, string& strError)
 {
     // Deviant: recalculate Accumulator Checkpoints that failed to database properly
-    if (!listMissingCheckpoints.empty() && chainActive.Height() >= Params().Zerocoin_StartHeight()) {
+    if (!listMissingCheckpoints.empty()) {
         LogPrintf("%s : finding missing checkpoints\n", __func__);
 
         //search the chain to see when zerocoin started
