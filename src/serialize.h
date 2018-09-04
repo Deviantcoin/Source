@@ -5,8 +5,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_SERIALIZE_H
-#define BITCOIN_SERIALIZE_H
+#ifndef DEVIANT_SERIALIZE_H
+#define DEVIANT_SERIALIZE_H
 
 #include <algorithm>
 #include <assert.h>
@@ -947,6 +947,12 @@ public:
         return *this;
     }
 
+    /** Pretend _nSize bytes are written, without specifying them. */
+    void seek(size_t _nSize)
+    {
+        this->nSize += _nSize;
+    }
+
     template <typename T>
     CSizeComputer& operator<<(const T& obj)
     {
@@ -960,4 +966,4 @@ public:
     }
 };
 
-#endif // BITCOIN_SERIALIZE_H
+#endif // DEVIANT_SERIALIZE_H
