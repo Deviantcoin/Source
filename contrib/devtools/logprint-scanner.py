@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+# Copyright (c) 2017-2018 The PIVX developers
+# Copyright (c) 2018 The Deviant developers
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 import os, sys
 from subprocess import check_output
 
