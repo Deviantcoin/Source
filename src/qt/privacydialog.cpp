@@ -793,7 +793,7 @@ void PrivacyDialog::updateAutomintStatus()
 void PrivacyDialog::updateSPORK16Status()
 {
     // Update/enable labels, buttons and tooltips depending on the current SPORK_16 status
-    bool fButtonsEnabled =  ui->pushButtonMintzPIV->isEnabled();
+    bool fButtonsEnabled =  ui->pushButtonMintzDEV->isEnabled();
     bool fMaintenanceMode = GetAdjustedTime() > GetSporkValue(SPORK_16_ZEROCOIN_MAINTENANCE_MODE);
     if (fMaintenanceMode && fButtonsEnabled) {
         // Mint zDEV
@@ -803,7 +803,6 @@ void PrivacyDialog::updateSPORK16Status()
         // Spend zDEV
         ui->pushButtonSpendzDEV->setEnabled(false);
         ui->pushButtonSpendzDEV->setToolTip(tr("zDEV is currently disabled due to maintenance."));
-    }
     } else if (!fMaintenanceMode && !fButtonsEnabled) {
         // Mint zDEV
         ui->pushButtonMintzDEV->setEnabled(true);
