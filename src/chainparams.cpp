@@ -152,8 +152,8 @@ public:
         nBlockFirstFraudulent = ~1; //First block that bad serials emerged
         nBlockLastGoodCheckpoint = ~1; //Last valid accumulator checkpoint
         nBlockEnforceInvalidUTXO = 1; // Start enforcing the invalid UTXO's
-        nInvalidAmountFiltered = 268200*COIN; //Amount of invalid coins filtered through exchanges, that should be considered valid
-        nBlockZerocoinV2 = 99999999; //!> The block that zerocoin v2 becomes active - roughly Tuesday, May 8, 2018 4:00:00 AM GMT
+        nInvalidAmountFiltered = 268200*COIN; //Amount of invalid coins filtered through exchanges, that should be considered valid        
+        nBlockZerocoinV2 = 198500; //!> The block that zerocoin v2 becomes active - roughly Tuesday, May 8, 2018 4:00:00 AM GMT
         nEnforceNewSporkKey = 1529762400; //!> Sporks signed after (GMT):Saturday, June 23, 2018 2:00:00 PM GMT must use the new spork key
         nRejectOldSporkKey = 1529661600; //!> Fully reject old spork key after (GMT):  Friday, June 22, 2018 10:00:00 AM
         
@@ -185,15 +185,15 @@ public:
         hashGenesisBlock = genesis.GetHash();
         assert(hashGenesisBlock == uint256("0x00000e697a1e963f6ae8288419ffb0d59de9d232bac8efda8c6491d1c31e3139"));
         assert(genesis.hashMerkleRoot == uint256("0x46ef6862b7bc094822eb7b5f4e47a0276baeb7599a284bc4182ad3a163b53c4a"));
-          
+
         vSeeds.push_back(CDNSSeedData("seed1.deviantcoin.io", "seed1.deviantcoin.io"));              
         vSeeds.push_back(CDNSSeedData("seed2.deviantcoin.io", "seed2.deviantcoin.io"));
         vSeeds.push_back(CDNSSeedData("seed3.deviantcoin.io", "seed3.deviantcoin.io"));           
-	vSeeds.push_back(CDNSSeedData("seed4.deviantcoin.io", "seed4.deviantcoin.io"));           
-	vSeeds.push_back(CDNSSeedData("seed5.deviantcoin.io", "seed5.deviantcoin.io"));           
-	vSeeds.push_back(CDNSSeedData("138.197.146.236", "138.197.146.236"));          
-        vSeeds.push_back(CDNSSeedData("209.97.131.20", "209.97.131.20"));   
-     
+        vSeeds.push_back(CDNSSeedData("seed4.deviantcoin.io", "seed4.deviantcoin.io"));
+        vSeeds.push_back(CDNSSeedData("seed5.deviantcoin.io", "seed5.deviantcoin.io"));
+        vSeeds.push_back(CDNSSeedData("138.197.146.236", "138.197.146.236"));
+        vSeeds.push_back(CDNSSeedData("209.97.131.20", "209.97.131.20"));
+
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 90);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 10);
         base58Prefixes[SECRET_KEY] = std::vector<unsigned char>(1, 137);
@@ -279,6 +279,7 @@ public:
         nBlockLastGoodCheckpoint = 9891730; //Last valid accumulator checkpoint
         nBlockEnforceInvalidUTXO = 9902850; //Start enforcing the invalid UTXO's
         nInvalidAmountFiltered = 0; //Amount of invalid coins filtered through exchanges, that should be considered valid
+        //TODO change nBlockZerocoinV2 for zDev spendability in the testnet
         nBlockZerocoinV2 = 99999999; //!> The block that zerocoin v2 becomes active
         nEnforceNewSporkKey = 1521604800; //!> Sporks signed after Wednesday, March 21, 2018 4:00:00 AM GMT must use the new spork key
         nRejectOldSporkKey = 1522454400; //!> Reject old spork key after Saturday, March 31, 2018 12:00:00 AM GMT

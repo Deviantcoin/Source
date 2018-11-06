@@ -206,7 +206,7 @@ bool InitializeAccumulators(const int nHeight, int& nHeightCheckpoint, Accumulat
         mapAccumulators.Reset(Params().Zerocoin_Params(false));
 
         // 20 after v2 start is when the new checkpoints will be in the block, so don't need to load hard checkpoints
-        if (nHeight <= Params().Zerocoin_Block_V2_Start() + 20) {
+        /*if (nHeight <= Params().Zerocoin_Block_V2_Start() + 20) {
             //Load hard coded checkpointed value
             AccumulatorCheckpoints::Checkpoint checkpoint = AccumulatorCheckpoints::GetClosestCheckpoint(nHeight,
                                                                                                          nHeightCheckpoint);
@@ -215,7 +215,7 @@ bool InitializeAccumulators(const int nHeight, int& nHeightCheckpoint, Accumulat
 
             mapAccumulators.Load(checkpoint);
             return true;
-        }
+        }*/
     }
 
     //Use the previous block's checkpoint to initialize the accumulator's state
