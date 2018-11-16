@@ -315,7 +315,7 @@ bool ValidateAccumulatorCheckpoint(const CBlock& block, CBlockIndex* pindex, Acc
         if (!CalculateAccumulatorCheckpoint(pindex->nHeight, nCheckpointCalculated, mapAccumulators))
             return error("%s : failed to calculate accumulator checkpoint", __func__);
 
-        if (nCheckpointCalculated != block.nAccumulatorCheckpoint) {
+        if (nCheckpointCalculated != block.nAccumulatorCheckpoint && block.nTime > GetSporkValue(SPORK_17_BAN_ZDEV_TRANSACTIONS_VERSION_1_IN_MAINTENANCE_MODE)) {
             LogPrintf("%s: block=%d calculated: %s\n block: %s\n", __func__, pindex->nHeight, nCheckpointCalculated.GetHex(), block.nAccumulatorCheckpoint.GetHex());
             return error("%s : accumulator does not match calculated value", __func__);
         }
@@ -395,22 +395,13 @@ bool GetAccumulatorValue(int& nHeight, const libzerocoin::CoinDenomination denom
 
     //Every situation except for about 20 blocks should use this method
     uint256 nCheckpointBeforeMint = chainActive[nHeight]->nAccumulatorCheckpoint;
-    if (nHeight > Params().Zerocoin_Block_V2_Start() + 20)
+    if (nHeight > Params().Zerocoin_Block_V2_Start() + 20 && nCheckpointBeforeMint != 0)
         return GetAccumulatorValueFromDB(nCheckpointBeforeMint, denom, bnAccValue);
 
-    int nHeightCheckpoint = 0;
-    AccumulatorCheckpoints::Checkpoint checkpoint = AccumulatorCheckpoints::GetClosestCheckpoint(nHeight, nHeightCheckpoint);
-    if (nHeightCheckpoint < 0) {
-        //Start at the first zerocoin
-        libzerocoin::Accumulator accumulator(Params().Zerocoin_Params(false), denom);
-        bnAccValue = accumulator.getValue();
-        nHeight = Params().Zerocoin_Block_V2_Start() + 10;
-        return true;
-    }
-
-    nHeight = nHeightCheckpoint;
-    bnAccValue = checkpoint.at(denom);
-
+    //Start at the first zerocoin
+    libzerocoin::Accumulator accumulator(Params().Zerocoin_Params(false), denom);
+    bnAccValue = accumulator.getValue();
+    nHeight = Params().Zerocoin_Block_V2_Start() + 10;
     return true;
 }
 
