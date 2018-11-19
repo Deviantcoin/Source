@@ -153,9 +153,10 @@ public:
         nBlockLastGoodCheckpoint = ~1; //Last valid accumulator checkpoint
         nBlockEnforceInvalidUTXO = 1; // Start enforcing the invalid UTXO's
         nInvalidAmountFiltered = 268200*COIN; //Amount of invalid coins filtered through exchanges, that should be considered valid        
-        nBlockZerocoinV2 = 198500; //!> The block that zerocoin v2 becomes active - roughly Tuesday, May 8, 2018 4:00:00 AM GMT
-        nEnforceNewSporkKey = 1529762400; //!> Sporks signed after (GMT):Saturday, June 23, 2018 2:00:00 PM GMT must use the new spork key
-        nRejectOldSporkKey = 1529661600; //!> Fully reject old spork key after (GMT):  Friday, June 22, 2018 10:00:00 AM
+        nBlockZerocoinV2 = 207730; //!> The block that zerocoin v2 becomes active - roughly Tuesday, May 8, 2018 4:00:00 AM GMT
+        //TODO change
+        nEnforceNewSporkKey = 1542395070; //!> Sporks signed after  Wednesday, 14 November 2018 11:00:00 AM GMT must use the new spork key
+        nRejectOldSporkKey = 1542395070; //!> Reject old spork key after  Wednesday, 14 November 2018 11:00:00 AM GMT
         
         /**
          * Build the genesis block. Note that the output of the genesis coinbase cannot
@@ -214,7 +215,8 @@ public:
         fHeadersFirstSyncingActive = false;
 
         nPoolMaxTransactions = 3;
-        strSporkKey = "04B433E6598390C992F4F022F20D3B4CBBE691652EE7C48243B81701CBDB7CC7D7BF0EE09E154E6FCBF2043D65AF4E9E97B89B5DBAF830D83B9B7F469A6C45A717";
+
+        strSporkKey = "04423452b9035e7ee811509eee795d27e33e33bb6e31fb4e2d33a601385b0cf98fc26732c4df0251b2eaa7cc6827e117c008ffd388e356b1345e1780f0b362991d";
         strSporkKeyOld = "04B433E6598390C992F4F022F20D3B4CBBE691652EE7C48243B81701CBDB7CC7D7BF0EE09E154E6FCBF2043D65AF4E9E97B89B5DBAF830D83B9B7F469A6C45A717";
         strObfuscationPoolDummyAddress = "d87q2gC9j6nNrnzCsg4aY6bHMLsT9nUhEw";
         nStartMasternodePayments = 1529784000; //Saturday, June 23, 2018 8:00:00 PM GMT
