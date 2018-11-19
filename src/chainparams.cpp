@@ -68,30 +68,31 @@ static Checkpoints::MapCheckpoints mapCheckpoints =
     (501, uint256("0x6f6f05badd2d9b824749cbee6a732ab46338c563c16162501853a1a2f952f29d"))
     (1587, uint256("0x24a7001a82608901f47dbd693e0e3e72ba5588c4a476d053ffcb8294a9f32ceb"))
     (2342, uint256("0x06b972caff65d145d6714d7e9184f03a4e134f46f2dc599ceaa6fc4b293bf85f"))
-    (3110, uint256("0xcc230f6ec71671418af9e75aeed4a9d2671f0a262564b261e013c5e57b34153d"));
+    (3110, uint256("0xcc230f6ec71671418af9e75aeed4a9d2671f0a262564b261e013c5e57b34153d"))
+    (209000, uint256("0xc46f338ff967b992f4a5b68ddac9b5f30ab2c883e37d71a7b8c1ec97acccdd57"));
 
 
 static const Checkpoints::CCheckpointData data = {
     &mapCheckpoints,
-    1529589600, // * UNIX timestamp of last checkpoint block
-    1,    // * total number of transactions between genesis and last checkpoint
+    1542471105, // * UNIX timestamp of last checkpoint block
+    511556,     // * total number of transactions between genesis and last checkpoint
                 //   (the tx=... number in the SetBestChain debug.log lines)
-    10000        // * estimated number of transactions per day after checkpoint
+    10000       // * estimated number of transactions per day after checkpoint
 };
 
 static Checkpoints::MapCheckpoints mapCheckpointsTestnet =
-    boost::assign::map_list_of(0, uint256("0000014bd7a053eb417c79a53bf206733927fab837ad1a5e06265b21f8d9e9e8"));
+    boost::assign::map_list_of(0, uint256("00000cc1b527ca81f89209587a7d343f2578b2bc3bab157a8709a65263f38f1d"));
 static const Checkpoints::CCheckpointData dataTestnet = {
     &mapCheckpointsTestnet,
-    1522920805,
+    1501776000,
     0,
     250};
 
 static Checkpoints::MapCheckpoints mapCheckpointsRegtest =
-    boost::assign::map_list_of(0, uint256("000007c6a68a4e47f0acdcf0b13d98f410ebd84394be5cb2b2852f93105a1ced"));
+    boost::assign::map_list_of(0, uint256("00000cc1b527ca81f89209587a7d343f2578b2bc3bab157a8709a65263f38f1d"));
 static const Checkpoints::CCheckpointData dataRegtest = {
     &mapCheckpointsRegtest,
-    1522922005,
+    1501776000,
     0,
     100};
 
