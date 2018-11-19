@@ -16,6 +16,8 @@
 
 #include <boost/assign/list_of.hpp>
 
+#include <sstream>
+
 using namespace std;
 using namespace boost::assign;
 
@@ -287,10 +289,10 @@ public:
 
         //! Modify the testnet genesis block so the timestamp is valid for a later start.
         genesis.nTime = 1501776000; // Thursday, August 3, 2017 4:00:00 PM GMT
-        genesis.nNonce = 1254338;
+        genesis.nNonce = 1409288;
 
         hashGenesisBlock = genesis.GetHash();
-        //assert(hashGenesisBlock == uint256("0x0000014bd7a053eb417c79a53bf206733927fab837ad1a5e06265b21f8d9e9e8"));
+        assert(hashGenesisBlock == uint256("0x00000cc1b527ca81f89209587a7d343f2578b2bc3bab157a8709a65263f38f1d"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -358,11 +360,11 @@ public:
         bnProofOfWorkLimit = ~uint256(0) >> 1;
         genesis.nTime = 1501776000; // Thursday, August 3, 2017 4:00:00 PM GMT
         genesis.nBits = 0x1e0ffff0;
-        genesis.nNonce = 155014;
+        genesis.nNonce = 1409288;
 
         hashGenesisBlock = genesis.GetHash();
         nDefaultPort = 51486;
-        //assert(hashGenesisBlock == uint256("0x000007c6a68a4e47f0acdcf0b13d98f410ebd84394be5cb2b2852f93105a1ced"));
+        assert(hashGenesisBlock == uint256("0x00000cc1b527ca81f89209587a7d343f2578b2bc3bab157a8709a65263f38f1d"));
 
         vFixedSeeds.clear(); //! Testnet mode doesn't have any fixed seeds.
         vSeeds.clear();      //! Testnet mode doesn't have any DNS seeds.
