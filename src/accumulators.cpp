@@ -315,6 +315,8 @@ bool ValidateAccumulatorCheckpoint(const CBlock& block, CBlockIndex* pindex, Acc
         if (!CalculateAccumulatorCheckpoint(pindex->nHeight, nCheckpointCalculated, mapAccumulators))
             return error("%s : failed to calculate accumulator checkpoint", __func__);
 
+        //We don't check accumulatorCheckpoint for block created before SPORK_17_BAN_ZDEV_TRANSACTIONS_VERSION_1_IN_MAINTENANCE_MODE
+        //SPORK_17_BAN_ZDEV_TRANSACTIONS_VERSION_1_IN_MAINTENANCE_MODE must be switched on as soon as SPORK_16_ZEROCOIN_MAINTENANCE_MODE swiched of after fix issue with accumulator checkpoints
         if (nCheckpointCalculated != block.nAccumulatorCheckpoint && block.nTime > GetSporkValue(SPORK_17_BAN_ZDEV_TRANSACTIONS_VERSION_1_IN_MAINTENANCE_MODE)) {
             LogPrintf("%s: block=%d calculated: %s\n block: %s\n", __func__, pindex->nHeight, nCheckpointCalculated.GetHex(), block.nAccumulatorCheckpoint.GetHex());
             return error("%s : accumulator does not match calculated value", __func__);
@@ -400,8 +402,8 @@ bool GetAccumulatorValue(int& nHeight, const libzerocoin::CoinDenomination denom
 
     //Start at the first zerocoin
     libzerocoin::Accumulator accumulator(Params().Zerocoin_Params(false), denom);
-    bnAccValue = accumulator.getValue();
-    nHeight = Params().Zerocoin_Block_V2_Start() + 10;
+    bnAccValue = accumulator.getValue();        
+    nHeight = Params().Zerocoin_Block_V2_Start() + 10; //addition of ten it is legacy from PIVX
     return true;
 }
 
