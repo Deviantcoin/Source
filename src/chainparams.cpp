@@ -157,7 +157,6 @@ public:
         nBlockEnforceInvalidUTXO = 1; // Start enforcing the invalid UTXO's
         nInvalidAmountFiltered = 268200*COIN; //Amount of invalid coins filtered through exchanges, that should be considered valid        
         nBlockZerocoinV2 = 207730; //!> The block that zerocoin v2 becomes active - roughly Tuesday, May 8, 2018 4:00:00 AM GMT
-        //TODO change
         nEnforceNewSporkKey = 1542395070; //!> Sporks signed after  Wednesday, 14 November 2018 11:00:00 AM GMT must use the new spork key
         nRejectOldSporkKey = 1542395070; //!> Reject old spork key after  Wednesday, 14 November 2018 11:00:00 AM GMT
         
