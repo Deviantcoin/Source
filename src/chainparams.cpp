@@ -16,6 +16,8 @@
 
 #include <boost/assign/list_of.hpp>
 
+#include <sstream>
+
 using namespace std;
 using namespace boost::assign;
 
@@ -66,30 +68,31 @@ static Checkpoints::MapCheckpoints mapCheckpoints =
     (501, uint256("0x6f6f05badd2d9b824749cbee6a732ab46338c563c16162501853a1a2f952f29d"))
     (1587, uint256("0x24a7001a82608901f47dbd693e0e3e72ba5588c4a476d053ffcb8294a9f32ceb"))
     (2342, uint256("0x06b972caff65d145d6714d7e9184f03a4e134f46f2dc599ceaa6fc4b293bf85f"))
-    (3110, uint256("0xcc230f6ec71671418af9e75aeed4a9d2671f0a262564b261e013c5e57b34153d"));
+    (3110, uint256("0xcc230f6ec71671418af9e75aeed4a9d2671f0a262564b261e013c5e57b34153d"))
+    (209000, uint256("0xc46f338ff967b992f4a5b68ddac9b5f30ab2c883e37d71a7b8c1ec97acccdd57"));
 
 
 static const Checkpoints::CCheckpointData data = {
     &mapCheckpoints,
-    1529589600, // * UNIX timestamp of last checkpoint block
-    1,    // * total number of transactions between genesis and last checkpoint
+    1542471105, // * UNIX timestamp of last checkpoint block
+    511556,     // * total number of transactions between genesis and last checkpoint
                 //   (the tx=... number in the SetBestChain debug.log lines)
-    10000        // * estimated number of transactions per day after checkpoint
+    10000       // * estimated number of transactions per day after checkpoint
 };
 
 static Checkpoints::MapCheckpoints mapCheckpointsTestnet =
-    boost::assign::map_list_of(0, uint256("0000014bd7a053eb417c79a53bf206733927fab837ad1a5e06265b21f8d9e9e8"));
+    boost::assign::map_list_of(0, uint256("00000cc1b527ca81f89209587a7d343f2578b2bc3bab157a8709a65263f38f1d"));
 static const Checkpoints::CCheckpointData dataTestnet = {
     &mapCheckpointsTestnet,
-    1522920805,
+    1501776000,
     0,
     250};
 
 static Checkpoints::MapCheckpoints mapCheckpointsRegtest =
-    boost::assign::map_list_of(0, uint256("000007c6a68a4e47f0acdcf0b13d98f410ebd84394be5cb2b2852f93105a1ced"));
+    boost::assign::map_list_of(0, uint256("00000cc1b527ca81f89209587a7d343f2578b2bc3bab157a8709a65263f38f1d"));
 static const Checkpoints::CCheckpointData dataRegtest = {
     &mapCheckpointsRegtest,
-    1522922005,
+    1501776000,
     0,
     100};
 
@@ -153,9 +156,9 @@ public:
         nBlockLastGoodCheckpoint = ~1; //Last valid accumulator checkpoint
         nBlockEnforceInvalidUTXO = 1; // Start enforcing the invalid UTXO's
         nInvalidAmountFiltered = 268200*COIN; //Amount of invalid coins filtered through exchanges, that should be considered valid        
-        nBlockZerocoinV2 = 198500; //!> The block that zerocoin v2 becomes active - roughly Tuesday, May 8, 2018 4:00:00 AM GMT
-        nEnforceNewSporkKey = 1529762400; //!> Sporks signed after (GMT):Saturday, June 23, 2018 2:00:00 PM GMT must use the new spork key
-        nRejectOldSporkKey = 1529661600; //!> Fully reject old spork key after (GMT):  Friday, June 22, 2018 10:00:00 AM
+        nBlockZerocoinV2 = 207730; //!> The block that zerocoin v2 becomes active - roughly Tuesday, May 8, 2018 4:00:00 AM GMT
+        nEnforceNewSporkKey = 1542395070; //!> Sporks signed after  Wednesday, 14 November 2018 11:00:00 AM GMT must use the new spork key
+        nRejectOldSporkKey = 1542395070; //!> Reject old spork key after  Wednesday, 14 November 2018 11:00:00 AM GMT
         
         /**
          * Build the genesis block. Note that the output of the genesis coinbase cannot
@@ -214,7 +217,8 @@ public:
         fHeadersFirstSyncingActive = false;
 
         nPoolMaxTransactions = 3;
-        strSporkKey = "04B433E6598390C992F4F022F20D3B4CBBE691652EE7C48243B81701CBDB7CC7D7BF0EE09E154E6FCBF2043D65AF4E9E97B89B5DBAF830D83B9B7F469A6C45A717";
+
+        strSporkKey = "04423452b9035e7ee811509eee795d27e33e33bb6e31fb4e2d33a601385b0cf98fc26732c4df0251b2eaa7cc6827e117c008ffd388e356b1345e1780f0b362991d";
         strSporkKeyOld = "04B433E6598390C992F4F022F20D3B4CBBE691652EE7C48243B81701CBDB7CC7D7BF0EE09E154E6FCBF2043D65AF4E9E97B89B5DBAF830D83B9B7F469A6C45A717";
         strObfuscationPoolDummyAddress = "d87q2gC9j6nNrnzCsg4aY6bHMLsT9nUhEw";
         nStartMasternodePayments = 1529784000; //Saturday, June 23, 2018 8:00:00 PM GMT
@@ -279,17 +283,16 @@ public:
         nBlockLastGoodCheckpoint = 9891730; //Last valid accumulator checkpoint
         nBlockEnforceInvalidUTXO = 9902850; //Start enforcing the invalid UTXO's
         nInvalidAmountFiltered = 0; //Amount of invalid coins filtered through exchanges, that should be considered valid
-        //TODO change nBlockZerocoinV2 for zDev spendability in the testnet
-        nBlockZerocoinV2 = 99999999; //!> The block that zerocoin v2 becomes active
-        nEnforceNewSporkKey = 1521604800; //!> Sporks signed after Wednesday, March 21, 2018 4:00:00 AM GMT must use the new spork key
-        nRejectOldSporkKey = 1522454400; //!> Reject old spork key after Saturday, March 31, 2018 12:00:00 AM GMT
+        nBlockZerocoinV2 = 220; //!> The block that zerocoin v2 becomes active.
+        nEnforceNewSporkKey = 1542193200; //!>  Wednesday, 14 November 2018 11:00:00 AM GMT must use the new spork key
+        nRejectOldSporkKey = 1542193200; //!> Reject old spork key after  Wednesday, 14 November 2018 11:00:00 AM GMT
 
         //! Modify the testnet genesis block so the timestamp is valid for a later start.
         genesis.nTime = 1501776000; // Thursday, August 3, 2017 4:00:00 PM GMT
-        genesis.nNonce = 1254338;
+        genesis.nNonce = 1409288;
 
         hashGenesisBlock = genesis.GetHash();
-        //assert(hashGenesisBlock == uint256("0x0000014bd7a053eb417c79a53bf206733927fab837ad1a5e06265b21f8d9e9e8"));
+        assert(hashGenesisBlock == uint256("0x00000cc1b527ca81f89209587a7d343f2578b2bc3bab157a8709a65263f38f1d"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -318,8 +321,8 @@ public:
         fTestnetToBeDeprecatedFieldRPC = true;
 
         nPoolMaxTransactions = 2;
-        strSporkKey = "04A8B319388C0F8588D238B9941DC26B26D3F9465266B368A051C5C100F79306A557780101FE2192FE170D7E6DEFDCBEE4C8D533396389C0DAFFDBC842B002243C";
-        strSporkKeyOld = "04348C2F50F90267E64FACC65BFDC9D0EB147D090872FB97ABAE92E9A36E6CA60983E28E741F8E7277B11A7479B626AC115BA31463AC48178A5075C5A9319D4A38";
+        strSporkKey = "049ae88f44cd9dae2450ad895dc3296ee2b76f1a9c4bc338fa3a90d1672afdf16cafe5acb8a641232ffb36e674337a29a1ab99e27ee23a17e72f2229a6f127272c";
+        strSporkKeyOld = "04A8B319388C0F8588D238B9941DC26B26D3F9465266B368A051C5C100F79306A557780101FE2192FE170D7E6DEFDCBEE4C8D533396389C0DAFFDBC842B002243C";
         strObfuscationPoolDummyAddress = "y57cqfGRkekRyDRNeJiLtYVEbvhXrNbmox";
         nStartMasternodePayments = 1524201152; // Friday, April 20, 2018 5:12:32 AM GMT
         nBudget_Fee_Confirmations = 3; // Number of confirmations for the finalization fee. We have to make this very short
@@ -357,11 +360,11 @@ public:
         bnProofOfWorkLimit = ~uint256(0) >> 1;
         genesis.nTime = 1501776000; // Thursday, August 3, 2017 4:00:00 PM GMT
         genesis.nBits = 0x1e0ffff0;
-        genesis.nNonce = 155014;
+        genesis.nNonce = 1409288;
 
         hashGenesisBlock = genesis.GetHash();
         nDefaultPort = 51486;
-        //assert(hashGenesisBlock == uint256("0x000007c6a68a4e47f0acdcf0b13d98f410ebd84394be5cb2b2852f93105a1ced"));
+        assert(hashGenesisBlock == uint256("0x00000cc1b527ca81f89209587a7d343f2578b2bc3bab157a8709a65263f38f1d"));
 
         vFixedSeeds.clear(); //! Testnet mode doesn't have any fixed seeds.
         vSeeds.clear();      //! Testnet mode doesn't have any DNS seeds.
