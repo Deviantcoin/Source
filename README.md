@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/ak-toktor/Source.svg?branch=master)](https://travis-ci.com/ak-toktor/Source)
+
 Deviant Core integration/staging repository
 =====================================
 
