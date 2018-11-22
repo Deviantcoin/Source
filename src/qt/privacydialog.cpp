@@ -82,7 +82,7 @@ PrivacyDialog::PrivacyDialog(QWidget* parent) : QDialog(parent, Qt::WindowSystem
     ui->labelZsupplyText500->setText(tr("Denom. <b>500</b>:"));
     ui->labelZsupplyText1000->setText(tr("Denom. <b>1000</b>:"));
     ui->labelZsupplyText5000->setText(tr("Denom. <b>5000</b>:"));
-    
+
     // Deviant settings
     QSettings settings;
     if (!settings.contains("nSecurityLevel")){
@@ -100,6 +100,7 @@ PrivacyDialog::PrivacyDialog(QWidget* parent) : QDialog(parent, Qt::WindowSystem
     else{
         fMinimizeChange = settings.value("fMinimizeChange").toBool();
     }
+
     ui->checkBoxMinimizeChange->setChecked(fMinimizeChange);
 
     // Start with displaying the "out of sync" warnings
@@ -792,7 +793,9 @@ void PrivacyDialog::updateAutomintStatus()
 void PrivacyDialog::updateSPORK16Status()
 {
     // Update/enable labels, buttons and tooltips depending on the current SPORK_16 status
-    if(GetAdjustedTime() > GetSporkValue(SPORK_16_ZEROCOIN_MAINTENANCE_MODE)) {
+    bool fButtonsEnabled =  ui->pushButtonMintzDEV->isEnabled();
+    bool fMaintenanceMode = GetAdjustedTime() > GetSporkValue(SPORK_16_ZEROCOIN_MAINTENANCE_MODE);
+    if (fMaintenanceMode && fButtonsEnabled) {
         // Mint zDEV
         ui->pushButtonMintzDEV->setEnabled(false);
         ui->pushButtonMintzDEV->setToolTip(tr("zDEV is currently disabled due to maintenance."));
@@ -800,8 +803,7 @@ void PrivacyDialog::updateSPORK16Status()
         // Spend zDEV
         ui->pushButtonSpendzDEV->setEnabled(false);
         ui->pushButtonSpendzDEV->setToolTip(tr("zDEV is currently disabled due to maintenance."));
-    }
-    else {
+    } else if (!fMaintenanceMode && !fButtonsEnabled) {
         // Mint zDEV
         ui->pushButtonMintzDEV->setEnabled(true);
         ui->pushButtonMintzDEV->setToolTip(tr("PrivacyDialog", "Enter an amount of DEV to convert to zDEV", 0));
