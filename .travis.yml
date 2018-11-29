@@ -108,6 +108,12 @@ jobs:
     - contrib/devtools/logprint-scanner.py
     - if [ "$TRAVIS_EVENT_TYPE" = "pull_request" ]; then contrib/devtools/lint-whitespace.sh;
       fi
+before_deploy:
+    # Set up git user name and tag this commit
+    - git config --local user.name "ScaMar"
+    - git config --local user.email "scamar@mail.com"
+    - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+    - git tag $TRAVIS_TAG
 deploy:
   provider: releases
   api_key:
@@ -116,3 +122,6 @@ deploy:
   on:
     repo: ScaMar/Source
     branch: travis-corrections
+    tags: true
+  skip_cleanup: true
+    
