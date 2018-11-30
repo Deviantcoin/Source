@@ -108,6 +108,9 @@ jobs:
     - contrib/devtools/logprint-scanner.py
     - if [ "$TRAVIS_EVENT_TYPE" = "pull_request" ]; then contrib/devtools/lint-whitespace.sh;
       fi
+before_deploy:
+    - tar -cvzf $HOST.tar.gz $OUTDIR
+    - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
 deploy:
   provider: releases
   api_key:
