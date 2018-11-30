@@ -42,59 +42,47 @@ env:
     libz-dev libbz2-dev libtiff-tools python-dev" BITCOIN_CONFIG="--enable-gui --enable-reduce-exports"
     OSX_SDK=10.11 GOAL="deploy"
 before_install:
-- travis_retry sudo apt-get install python-dev
-- export PATH=$(echo $PATH | tr ':' "\n" | sed '/\/opt\/python/d' | tr "\n" ":" |
+  - travis_retry sudo apt-get install python-dev
+  - export PATH=$(echo $PATH | tr ':' "\n" | sed '/\/opt\/python/d' | tr "\n" ":" |
   sed "s|::|:|g")
 install:
-- if [ "$PYZMQ" = "true" ]; then pip install pyzmq --user ; fi
-- if [ -n "$DPKG_ADD_ARCH" ]; then sudo dpkg --add-architecture "$DPKG_ADD_ARCH" ;
-  fi
-- if [ -n "$PACKAGES" ]; then travis_retry sudo apt-get update; fi
-- if [ -n "$PACKAGES" ]; then travis_retry sudo apt-get install --no-install-recommends
-  --no-upgrade -qq $PACKAGES; fi
+  - if [ "$PYZMQ" = "true" ]; then pip install pyzmq --user ; fi
+  - if [ -n "$DPKG_ADD_ARCH" ]; then sudo dpkg --add-architecture "$DPKG_ADD_ARCH" ; fi
+  - if [ -n "$PACKAGES" ]; then travis_retry sudo apt-get update; fi
+  - if [ -n "$PACKAGES" ]; then travis_retry sudo apt-get install --no-install-recommends --no-upgrade -qq $PACKAGES; fi
 before_script:
-- unset CC; unset CXX
-- mkdir -p depends/SDKs depends/sdk-sources
-- if [ -n "$OSX_SDK" -a ! -f depends/sdk-sources/MacOSX${OSX_SDK}.sdk.tar.xz ]; then
-  curl --location --fail $SDK_URL/MacOSX${OSX_SDK}.sdk.tar.xz -o depends/sdk-sources/MacOSX${OSX_SDK}.sdk.tar.xz;
-  fi
-- if [ -n "$OSX_SDK" -a -f depends/sdk-sources/MacOSX${OSX_SDK}.sdk.tar.xz ]; then
-  tar -C depends/SDKs -xf depends/sdk-sources/MacOSX${OSX_SDK}.sdk.tar.xz; fi
-- make $MAKEJOBS -C depends HOST=$HOST $DEP_OPTS
+  - unset CC; unset CXX
+  - mkdir -p depends/SDKs depends/sdk-sources
+  - if [ -n "$OSX_SDK" -a ! -f depends/sdk-sources/MacOSX${OSX_SDK}.sdk.tar.xz ]; then curl --location --fail $SDK_URL/MacOSX${OSX_SDK}.sdk.tar.xz -o depends/sdk-sources/MacOSX${OSX_SDK}.sdk.tar.xz; fi
+  - if [ -n "$OSX_SDK" -a -f depends/sdk-sources/MacOSX${OSX_SDK}.sdk.tar.xz ]; then tar -C depends/SDKs -xf depends/sdk-sources/MacOSX${OSX_SDK}.sdk.tar.xz; fi
+  - make $MAKEJOBS -C depends HOST=$HOST $DEP_OPTS
 script:
-- if [ -n "$USE_SHELL" ]; then export CONFIG_SHELL="$USE_SHELL"; fi
-- contrib/devtools/git-subtree-check.sh src/univalue
-- contrib/devtools/git-subtree-check.sh src/secp256k1
-- contrib/devtools/check-doc.py
-- contrib/devtools/logprint-scanner.py
-- if [ "$TRAVIS_EVENT_TYPE" = "pull_request" ]; then contrib/devtools/lint-whitespace.sh; fi
-- OUTDIR=$BASE_OUTDIR/$TRAVIS_PULL_REQUEST/$TRAVIS_JOB_NUMBER-$HOST
-- BITCOIN_CONFIG_ALL="--disable-dependency-tracking --disable-tests --prefix=$TRAVIS_BUILD_DIR/depends/$HOST
-  --bindir=$OUTDIR/bin --libdir=$OUTDIR/lib"
-- depends/$HOST/native/bin/ccache --max-size=$CCACHE_SIZE
-- test -n "$USE_SHELL" && eval '"$USE_SHELL" -c "./autogen.sh"' || ./autogen.sh
-- "./configure --cache-file=config.cache $BITCOIN_CONFIG_ALL $BITCOIN_CONFIG || (
-  cat config.log && false)"
-- make distdir PACKAGE=deviant VERSION=$HOST
-- cd deviant-$HOST
-- "./configure --cache-file=../config.cache $BITCOIN_CONFIG_ALL $BITCOIN_CONFIG ||
-  ( cat config.log && false)"
-- make $MAKEJOBS $GOAL || ( echo "Build failure. Verbose build follows." && make $GOAL
-  V=1 ; false )
-- export LD_LIBRARY_PATH=$TRAVIS_BUILD_DIR/depends/$HOST/lib
-- if [ "$RUN_TESTS" = "true" -a "$WINE" != "true" ]; then make $MAKEJOBS check VERBOSE=1;
-  fi
-- if [ "$RUN_TESTS" = "true" -a "$WINE" = "true" ]; then wine src/test/test_deviant.exe;
-  fi
-- if [ "$RUN_TESTS" = "true" ]; then qa/pull-tester/rpc-tests.py --coverage; fi
+  - if [ -n "$USE_SHELL" ]; then export CONFIG_SHELL="$USE_SHELL"; fi
+  - contrib/devtools/git-subtree-check.sh src/univalue
+  - contrib/devtools/git-subtree-check.sh src/secp256k1
+  - contrib/devtools/check-doc.py
+  - contrib/devtools/logprint-scanner.py
+  - if [ "$TRAVIS_EVENT_TYPE" = "pull_request" ]; then contrib/devtools/lint-whitespace.sh; fi
+  - OUTDIR=$BASE_OUTDIR/$TRAVIS_PULL_REQUEST/$TRAVIS_JOB_NUMBER-$HOST
+  - BITCOIN_CONFIG_ALL="--disable-dependency-tracking --disable-tests --prefix=$TRAVIS_BUILD_DIR/depends/$HOST --bindir=$OUTDIR/bin --libdir=$OUTDIR/lib"
+  - depends/$HOST/native/bin/ccache --max-size=$CCACHE_SIZE
+  - test -n "$USE_SHELL" && eval '"$USE_SHELL" -c "./autogen.sh"' || ./autogen.sh
+  - "./configure --cache-file=config.cache $BITCOIN_CONFIG_ALL $BITCOIN_CONFIG || (cat config.log && false)"
+  - make distdir PACKAGE=deviant VERSION=$HOST
+  - cd deviant-$HOST
+  - "./configure --cache-file=../config.cache $BITCOIN_CONFIG_ALL $BITCOIN_CONFIG || ( cat config.log && false)"
+  - make $MAKEJOBS $GOAL || ( echo "Build failure. Verbose build follows." && make $GOAL V=1 ; false )
+  - export LD_LIBRARY_PATH=$TRAVIS_BUILD_DIR/depends/$HOST/lib
+  - if [ "$RUN_TESTS" = "true" -a "$WINE" != "true" ]; then make $MAKEJOBS check VERBOSE=1; fi
+  - if [ "$RUN_TESTS" = "true" -a "$WINE" = "true" ]; then wine src/test/test_deviant.exe; fi
+  - if [ "$RUN_TESTS" = "true" ]; then qa/pull-tester/rpc-tests.py --coverage; fi
 after_script:
-- if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then (echo "Upload goes here. Something like: scp
--r $BASE_OUTDIR server" || echo "upload failed"); fi
-- echo $TRAVIS_COMMIT_RANGE
-- echo $TRAVIS_COMMIT_LOG
+  - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then (echo "Upload goes here. Something like: scp -r $BASE_OUTDIR server" || echo "upload failed"); fi
+  - echo $TRAVIS_COMMIT_RANGE
+  - echo $TRAVIS_COMMIT_LOG
 before_deploy:
-- HERE=$(pwd); cd $OUTDIR/../; tar -cvzf $HERE/$HOST.tar.gz bin/; cd $HERE
-- git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
+  - HERE=$(pwd); cd $OUTDIR/../; tar -cvzf $HOST.tar.gz bin/; cd $HERE
+  - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
 deploy:
   provider: releases
   api_key:
