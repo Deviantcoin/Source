@@ -63,6 +63,11 @@ before_script:
 - make $MAKEJOBS -C depends HOST=$HOST $DEP_OPTS
 script:
 - if [ -n "$USE_SHELL" ]; then export CONFIG_SHELL="$USE_SHELL"; fi
+- contrib/devtools/git-subtree-check.sh src/univalue
+- contrib/devtools/git-subtree-check.sh src/secp256k1
+- contrib/devtools/check-doc.py
+- contrib/devtools/logprint-scanner.py
+- if [ "$TRAVIS_EVENT_TYPE" = "pull_request" ]; then contrib/devtools/lint-whitespace.sh; fi
 - OUTDIR=$BASE_OUTDIR/$TRAVIS_PULL_REQUEST/$TRAVIS_JOB_NUMBER-$HOST
 - BITCOIN_CONFIG_ALL="--disable-dependency-tracking --disable-tests --prefix=$TRAVIS_BUILD_DIR/depends/$HOST
   --bindir=$OUTDIR/bin --libdir=$OUTDIR/lib"
@@ -87,27 +92,6 @@ after_script:
     -r $BASE_OUTDIR server" || echo "upload failed"); fi
 - echo $TRAVIS_COMMIT_RANGE
 - echo $TRAVIS_COMMIT_LOG
-jobs:
-  include:
-  - stage: lint
-    sudo: false
-    cache: false
-    addons:
-      apt:
-        packages:
-        - python3-pip
-        - shellcheck
-    install:
-    - travis_retry pip3 install flake8 --user
-    before_script:
-    - git fetch --unshallow
-    script:
-    - contrib/devtools/git-subtree-check.sh src/univalue
-    - contrib/devtools/git-subtree-check.sh src/secp256k1
-    - contrib/devtools/check-doc.py
-    - contrib/devtools/logprint-scanner.py
-    - if [ "$TRAVIS_EVENT_TYPE" = "pull_request" ]; then contrib/devtools/lint-whitespace.sh;
-      fi
 before_deploy:
     - tar -cvzf $HOST.tar.gz $OUTDIR
     - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
