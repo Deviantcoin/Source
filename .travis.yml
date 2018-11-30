@@ -93,7 +93,7 @@ after_script:
 - echo $TRAVIS_COMMIT_RANGE
 - echo $TRAVIS_COMMIT_LOG
 before_deploy:
-- HERE=$(pwd); cd $OUTDIR/../; tar -cvzf $HOST.tar.gz bin/; cd $HERE
+- HERE=$(pwd); cd $OUTDIR/../; tar -cvzf $HERE/$HOST.tar.gz bin/; cd $HERE
 - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
 deploy:
   provider: releases
