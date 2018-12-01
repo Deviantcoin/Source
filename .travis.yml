@@ -76,9 +76,9 @@ deploy:
   provider: releases
   api_key:
     secure: fCP91+PBDegqnMyX1rQ/Lbic8STATKJqD7AP7bv+DJSQrmVLpiCAUkA4yk08aHhoucKf39pJI+Lm05Siz5+Wf4Vlqs8b6U6iSKvKLUs903WsSAMWmgb6fp2U8UVnhS2tRwPxqiCQrkHwDmRfd0bJf3rLkhAY+1y6SOwQKMvP5OsX+D7l+nDk1gVTgTrj0ri7MWKUQP4ftopksGh46TL7IL2itim8hMm3XJMBTcAj0y0nC4NoEJhiGWXRF0MXfiCHxzUCPoGud2afVEICulUuco4xcMxiHetfKUJz6yjFC2ExTS4PQkrL91wPe0/LVJCqxfVn4NoxN//H9o2D7W7Zgr1jNtlxyWFlwGoDA6yuDM30ml0iz/x8sOOXN9ETDvN1DnKvAKWmtrYaxA/ENxhlW/SPlGe+WRDJD9hT3NP9hvS++qiNF4fhBQflLTf/zL2H6CR8ZC+O4PnE7l+hLcxYUEVOSX8jhvcoHrzC9Aml9fgeR2nKI9W8X/wPbNgjSYcCE49Uc/XTJkO38Isd2aiyZbPJ76/CdCYHUm9mlxJM+fJs7mfHExG0H/3HuxVPsJuLLfSzU8ta161Tg88XreS8tMPUCBvBOUgsvxTUsdYAjnHsDduN8sT+KIOA6lyrsgIIPDCLRlEaVXUMpPuClO3OfgqYm9q5Jw2w9oOVn4bSJgQ=
-if: env(HOST) = x86_64-apple-darwin14 
+if: env(HOST) = x86_64-apple-darwin14 \
     file: "Deviant-Core-$TAG-macosx-generic.dmg"
-if: env(HOST) != x86_64-apple-darwin14
+if: env(HOST) != x86_64-apple-darwin14 \
     file: "$HOST.tar.gz"
   on:
     repo: ScaMar/Source
