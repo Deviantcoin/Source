@@ -24,12 +24,12 @@ env:
   - LASTTAG=$(git describe --tags)
   - TAG="$LASTTAG"
   matrix:
-#  - HOST=arm-linux-gnueabihf PACKAGES="g++-arm-linux-gnueabihf" GOAL="install" BITCOIN_CONFIG="--enable-glibc-back-compat --enable-reduce-exports"
-#  - HOST=i686-w64-mingw32 DPKG_ADD_ARCH="i386" PACKAGES="python3 nsis g++-mingw-w64-i686 wine1.6 bc" RUN_TESTS=false GOAL="install" BITCOIN_CONFIG="--enable-reduce-exports"
-#  - HOST=i686-pc-linux-gnu PACKAGES="g++-multilib bc python3-zmq" RUN_TESTS=false GOAL="install" BITCOIN_CONFIG="--enable-zmq --enable-glibc-back-compat --enable-reduce-exports LDFLAGS=-static-libstdc++" PYZMQ=true
-#  - HOST=x86_64-w64-mingw32 DPKG_ADD_ARCH="i386" PACKAGES="python3 nsis g++-mingw-w64-x86-64 wine1.6 bc" RUN_TESTS=false GOAL="install" BITCOIN_CONFIG="--enable-gui --enable-reduce-exports" MAKEJOBS="-j4" WINE=true
-#  - HOST=x86_64-unknown-linux-gnu PACKAGES="bc python3-zmq" RUN_TESTS=false GOAL="install" BITCOIN_CONFIG="--enable-zmq --enable-glibc-back-compat --enable-reduce-exports" CPPFLAGS="-DDEBUG_LOCKORDER -DENABLE_DASH_DEBUG" PYZMQ=true
-  - HOST=x86_64-apple-darwin14 PACKAGES="cmake imagemagick libcap-dev librsvg2-bin libz-dev libbz2-dev libtiff-tools python-dev" BITCOIN_CONFIG="--enable-gui --enable-reduce-exports" OSX_SDK=10.11 GOAL="deploy"
+  - HOST=arm-linux-gnueabihf PACKAGES="g++-arm-linux-gnueabihf" GOAL="install-strip" BITCOIN_CONFIG="--enable-glibc-back-compat --enable-reduce-exports"
+  - HOST=i686-w64-mingw32 DPKG_ADD_ARCH="i386" PACKAGES="python3 nsis g++-mingw-w64-i686 wine1.6 bc zip unzip" RUN_TESTS=false GOAL="install-strip" BITCOIN_CONFIG="--enable-reduce-exports"
+  - HOST=i686-pc-linux-gnu PACKAGES="g++-multilib bc python3-zmq zip unzip" RUN_TESTS=false GOAL="install-strip" BITCOIN_CONFIG="--enable-zmq --enable-glibc-back-compat --enable-reduce-exports LDFLAGS=-static-libstdc++" PYZMQ=true
+  - HOST=x86_64-w64-mingw32 DPKG_ADD_ARCH="i386" PACKAGES="python3 nsis g++-mingw-w64-x86-64 wine1.6 bc zip unzip" RUN_TESTS=false GOAL="install-strip" BITCOIN_CONFIG="--enable-gui --enable-reduce-exports" MAKEJOBS="-j4" WINE=true
+  - HOST=x86_64-unknown-linux-gnu PACKAGES="bc python3-zmq zip unzip" RUN_TESTS=false GOAL="install-strip" BITCOIN_CONFIG="--enable-zmq --enable-glibc-back-compat --enable-reduce-exports" CPPFLAGS="-DDEBUG_LOCKORDER -DENABLE_DASH_DEBUG" PYZMQ=true
+  - HOST=x86_64-apple-darwin14 PACKAGES="cmake imagemagick libcap-dev librsvg2-bin libz-dev libbz2-dev libtiff-tools python-dev zip unzip" BITCOIN_CONFIG="--enable-gui --enable-reduce-exports" OSX_SDK=10.11 GOAL="deploy"
 before_install:
   - travis_retry sudo apt-get install python-dev
   - export PATH=$(echo $PATH | tr ':' "\n" | sed '/\/opt\/python/d' | tr "\n" ":" | sed "s|::|:|g")
@@ -68,7 +68,7 @@ after_script:
   - echo $TRAVIS_COMMIT_RANGE
   - echo $TRAVIS_COMMIT_LOG
 before_deploy:
-  - if [ "$HOST" == "x86_64-apple-darwin14" ]; then mv Deviant-Core.dmg Deviant-Core-$TAG-macosx-generic.dmg; FILE=Deviant-Core-$TAG-macosx-generic.dmg; else HERE=$(pwd); cd $OUTDIR; tar -cvzf $HERE/$HOST.tar.gz bin/; cd $HERE; FILE="$HOST.tar.gz"; fi
+  - if [ "$HOST" == "x86_64-apple-darwin14" ]; then mv Deviant-Core.dmg Deviant-Core-$TAG-macosx-generic.dmg; FILE=Deviant-Core-$TAG-macosx-generic.dmg; else HERE=$(pwd); cd $OUTDIR; zip -r $HERE/$HOST.zip bin/; cd $HERE; FILE="$HOST.zip"; fi
   - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
 deploy:
   provider: releases
