@@ -662,11 +662,13 @@ bool CMasternodeBroadcast::Sign(CKey& keyCollateralAddress)
     sigTime = GetAdjustedTime();
 
     std::string strMessage;
-    if(chainActive.Height() < Params().Zerocoin_Block_V2_Start())
+    /*
+    if(truechainActive.Height() < Params().Zerocoin_Block_V2_Start())
     	strMessage = GetOldStrMessage();
     else
     	strMessage = GetNewStrMessage();
-
+    */
+    strMessage = GetOldStrMessage();
     if (!obfuScationSigner.SignMessage(strMessage, errorMessage, sig, keyCollateralAddress))
     	return error("CMasternodeBroadcast::Sign() - Error: %s", errorMessage);
 

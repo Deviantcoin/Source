@@ -2120,7 +2120,9 @@ bool CWallet::SelectStakeCoins(std::list<std::unique_ptr<CStakeInput> >& listInp
     }
 
     //zDEV
-    if (GetBoolArg("-zdevstake", true) && chainActive.Height() > Params().Zerocoin_Block_V2_Start() && !IsSporkActive(SPORK_16_ZEROCOIN_MAINTENANCE_MODE)) {
+    if (GetBoolArg("-zdevstake", true) && chainActive.Height() > 9999999 && !IsSporkActive(SPORK_16_ZEROCOIN_MAINTENANCE_MODE)) {
+        //9999999 - Legacy value of nBlockZerocoinV2
+
         //Add zDEV
         set<CMintMeta> setMints = zdevTracker->ListMints(true, true, true);
 
@@ -5345,3 +5347,4 @@ bool CWallet::DatabaseMint(CDeterministicMint& dMint)
     zdevTracker->Add(dMint, true);
     return true;
 }
+
