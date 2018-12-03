@@ -4342,7 +4342,7 @@ bool AcceptBlockHeader(const CBlock& block, CValidationState& state, CBlockIndex
 
 bool ContextualCheckZerocoinStake(int nHeight, CStakeInput* stake)
 {
-    if (nHeight < 9999999) //9999999 - lagacy value of nBlockZerocoinV2
+    if (nHeight < 9999999) //9999999 - legacy value of nBlockZerocoinV2
         return error("%s: zDEV stake block is less than allowed start height", __func__);
 
     if (CZDevStake* zDEV = dynamic_cast<CZDevStake*>(stake)) {
