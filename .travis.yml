@@ -68,7 +68,7 @@ after_script:
   - echo $TRAVIS_COMMIT_RANGE
   - echo $TRAVIS_COMMIT_LOG
 before_deploy:
-  - if [ "$HOST" == "x86_64-apple-darwin14" ]; then mv Deviant-Core.dmg Deviant-Core-$TAG-macosx-generic.dmg; FILE=Deviant-Core-$TAG-macosx-generic.dmg; else HERE=$(pwd); cd $OUTDIR; zip -r $HERE/$HOST.zip bin/; cd $HERE; FILE="$HOST.zip"; fi
+  - if [ "$HOST" == "x86_64-apple-darwin14" ]; then mv Deviant-Core.dmg Deviant-Core-$TAG-macosx-generic.dmg; FILE=Deviant-Core-$TAG-macosx-generic.dmg; else HERE=$(pwd); cd $OUTDIR; zip -r $HERE/dev-$TAG-$HOST.zip bin/; cd $HERE; FILE="dev-$TAG-$HOST.zip"; fi
   - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
 deploy:
   provider: releases
