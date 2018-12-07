@@ -29,7 +29,7 @@ env:
   - HOST=i686-pc-linux-gnu PACKAGES="g++-multilib bc python3-zmq zip unzip" RUN_TESTS=false GOAL="install-strip" BITCOIN_CONFIG="--enable-zmq --enable-glibc-back-compat --enable-reduce-exports LDFLAGS=-static-libstdc++" PYZMQ=true
   - HOST=x86_64-w64-mingw32 DPKG_ADD_ARCH="i386" PACKAGES="python3 nsis g++-mingw-w64-x86-64 wine1.6 bc zip unzip" RUN_TESTS=false GOAL="install-strip" BITCOIN_CONFIG="--enable-gui --enable-reduce-exports" MAKEJOBS="-j4" WINE=true
   - HOST=x86_64-unknown-linux-gnu PACKAGES="bc python3-zmq zip unzip" RUN_TESTS=false GOAL="install-strip" BITCOIN_CONFIG="--enable-zmq --enable-glibc-back-compat --enable-reduce-exports" CPPFLAGS="-DDEBUG_LOCKORDER -DENABLE_DASH_DEBUG" PYZMQ=true
-  - HOST=x86_64-apple-darwin14 PACKAGES="cmake imagemagick libcap-dev librsvg2-bin libz-dev libbz2-dev libtiff-tools python-dev zip unzip" BITCOIN_CONFIG="--enable-gui --enable-reduce-exports" OSX_SDK=10.11 GOAL="deploy"
+  - HOST=x86_64-apple-darwin14 PACKAGES="cmake imagemagick libcap-dev librsvg2-bin libz-dev libbz2-dev libtiff-tools python-dev zip unzip" BITCOIN_CONFIG="--enable-gui --enable-reduce-exports" OSX_SDK=10.13 GOAL="deploy"
 before_install:
   - travis_retry sudo apt-get install python-dev
   - export PATH=$(echo $PATH | tr ':' "\n" | sed '/\/opt\/python/d' | tr "\n" ":" | sed "s|::|:|g")
