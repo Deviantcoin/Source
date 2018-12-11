@@ -2090,9 +2090,15 @@ int64_t GetMasternodePayment(int nHeight, int64_t blockValue, int nMasternodeCou
     else if (nHeight < 100000 && nHeight >= Params().LAST_POW_BLOCK()) {
         ret = blockValue * 4 / 5;  //80%
     }
-    else {
+    else if (nHeight < Params().Zerocoin_Block_V2_Start()) {
         ret = blockValue * 9 / 10;  //90%
         //return GetSeeSaw(blockValue, nMasternodeCount, nHeight);
+    }
+    else {
+        //When zDEV is staked, masternode only gets 2 DEV
+        ret = 3 * COIN;
+        if (isZDEVStake)
+            ret = 2 * COIN;
     }
 
     return ret;
@@ -4342,7 +4348,7 @@ bool AcceptBlockHeader(const CBlock& block, CValidationState& state, CBlockIndex
 
 bool ContextualCheckZerocoinStake(int nHeight, CStakeInput* stake)
 {
-    if (nHeight < 9999999) //9999999 - legacy value of nBlockZerocoinV2
+    if (nHeight < Params().Zerocoin_Block_V2_Start())
         return error("%s: zDEV stake block is less than allowed start height", __func__);
 
     if (CZDevStake* zDEV = dynamic_cast<CZDevStake*>(stake)) {
